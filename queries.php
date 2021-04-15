@@ -1,5 +1,25 @@
 <?php
 $queries = array (
-"firstname"=>"SELECT firstName FROM USERS WHERE userID=(userid) VALUES (?)",
+	//getters
+	"getProPic" => "", 
+	"getAbout" => "", 
+	"getFirstName" => "", 
+	"getLastName" => "", 
+	"getLogins" => "", 
+	"getMessageBoardID" => "", 
+	"getPasswordCreateDate" => "", 
+	"getAllTribalMemberships" => "", 
+	"getLastLoginDate" => "", 
+	//setters
+	"addTribeMembership" => "", 
+	"setProPic" => "", 
+	"setAbout" => "", 
+	"setFirstName" => "", 
+	"setLastName" => "", 
+	"setLogins" => "", 
+	"setMessageBoardID" => "", 
+	"setPasswordCreateDate" => "", 
+	"setAllTribalMemberships" => "", 
+	"setLastLoginDate" => "", 
 )
 ?>
