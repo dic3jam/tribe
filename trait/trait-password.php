@@ -1,5 +1,6 @@
 <?php 
 declare(strict_types=1);
+include '../include/queries.php';
 /* trait - password
  * defines a set of functions for 
  * manipulating passwords
@@ -24,5 +25,8 @@ trait password {
 	 */
 	private function validPassword(string $username) : boolean {}
 
+	private function getPassword() : string {}
+
+	private function setPassword() : boolean {}
 }
 ?>

@@ -1,5 +1,6 @@
 <?php 
 declare(strict_types=1);
+include '../include/queries.php';
 /* trait - username
  * defines a set of functions for 
  * manipulating usernames
@@ -35,5 +36,9 @@ trait username {
 		//will implement for v2 for now all usernames are valid
 		return true;
 	}
+
+	private function getUsername() : string {}
+
+	private function setUsername() : boolean {}
 }
 ?>

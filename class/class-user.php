@@ -4,6 +4,7 @@ include '../trait/trait-dbconnect.php';
 include '../trait/trait-authlogin.php';
 include '../trait/trait-username.php';
 include '../trait/trait-password.php';
+include '../include/queries.php';
 /* class - User
  * Enables user access to tribe.com. 
  * Provides functions for registration, login
@@ -111,28 +112,31 @@ class User {
 
 	private function getLastLoginDate() : string {}
 
+	private function getUserCreationDate() : string {}
+
 	//setters
 	
-	private function addTribeMembership() : string {}
+	//for adding to tribe, adding/removing council member status	
+	private function modTribeMembership() : boolean {}
 
-	private function setProPic() : string {}
+	private function setProPic() : boolean {}
 
-	private function setAbout() : string {}
+	private function setAbout() : boolean {}
 
-	private function setFirstName() : string {}
+	private function setFirstName() : boolean {}
 
-	private function setLastName() : string {}
+	private function setLastName() : boolean {}
 
-	private function setLogins() : int {}
+	private function setLogins() : boolean {}
 
-	private function setMessageBoardID() : int {}
+	private function setMessageBoardID() : boolean {}
 
-	private function setPasswordCreateDate() : string {}
+	private function setPasswordCreateDate() : boolean {}
 
-	private function setAllTribalMemberships() : string {}
+	private function setAllTribalMemberships() : boolean {}
 
-	private function setLastLoginDate() : string {}
+	private function setLastLoginDate() : boolean {}
 
-
+	private function setUserCreationDate() : boolean {}
 }
  ?>
