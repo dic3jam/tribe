@@ -14,7 +14,7 @@ trait username {
 	 * @return int the userID of that username, or -1 if 
 	 * the userName is not in the database
 	 */
-	private function checkUsername(string $username) : int {
+	private function checkUsername(string $username) : boolean {
 
 	}
 
@@ -37,8 +37,5 @@ trait username {
 		return true;
 	}
 
-	private function getUsername() : string {}
-
-	private function setUsername() : boolean {}
 }
 ?>

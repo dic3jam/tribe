@@ -14,7 +14,12 @@ trait password {
 	 * @param string password
 	 * @return boolean indicating success
 	 */
-	private function checkPassword(int $userId, string $password) : boolean {}
+	private function checkPassword(int $userId, string $password) : boolean {
+		if(sha1($password) == getPassword($userID))
+			return true;
+		else
+			return false;		
+	}
 
 	/* function validPassword
 	 * Checks password for correct length 
@@ -23,10 +28,13 @@ trait password {
 	 * @throw passwordLengthException, invalidPasswordException
 	 * @return boolean indicating success
 	 */
-	private function validPassword(string $username) : boolean {}
+	private function validPassword(string $password) : boolean {
+		if(strlen($password) < 20)
+			return true;
+		else
+			return false;
+		
+	}
 
-	private function getPassword() : string {}
-
-	private function setPassword() : boolean {}
 }
 ?>

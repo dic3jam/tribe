@@ -2,7 +2,7 @@
 $queries = array (
 //class user
 	//getters
-	"getUserID" => "SELECT userID FROM users WHERE userID = ?", 
+	"getUserID" => "SELECT userID FROM users WHERE username = ?", 
 	"getProPic" => "SELECT pro_pic_loc FROM users WHERE userID = ?", //ret string, int 
 	"getAbout" => "SELECT about FROM users WHERE userID = ?", //ret string, int
 	"getUsername" => "SELECT username FROM users WHERE userID = ?", //ret string, int
@@ -28,7 +28,7 @@ $queries = array (
 	"setMessageBoardID" => "UPDATE users (messageBoardID) VALUES (?) WHERE userID=(?)", //int int
 	"setPasswordCreateDate" => "UPDATE users (password_creation_date) VALUES NOW() WHERE userID=(?)", //int
 	//"setAllTribalMemberships" => "", 
-	"setLastLoginDate" => "UPDATE users (password_creation_date) VALUES NOW() WHERE userID=(?)", //int
+	"setLastLoginDate" => "UPDATE users (last_login_date) VALUES NOW() WHERE userID=(?)", //int
 	"setUserCreationDate" => "UPDATE users (user_creation_date) VALUES NOW() WHERE userID=(?)", //int
 
 //class tribe
