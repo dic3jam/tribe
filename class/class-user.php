@@ -39,7 +39,7 @@ class User {
 		check_login();
 		$this->userID = intval($_COOKIE['value']);
 		//admin
-		$this->dbc = new tribe-dbc();
+		$this->dbc = new dbc();
 		$this->queries = $queries;
 		//user properties
 		$this->username = getUsername();
@@ -211,7 +211,7 @@ class User {
 	 * @return the result of the query (can be of any type)
 	 */
 	private function runQuery(string $q, string $boundValueTypes, string $errorMessage, ...$params) {
-		$dbc = new tribe-dbc();
+		$dbc = new dbc();
 		try {
 			return execQuery(queries[$q], $dbc, $boundValueTypes, ...$params);	
 		} catch(Exception $e) {
