@@ -4,8 +4,6 @@ CREATE DATABASE tribe;
 
 USE tribe;
 
-# Users Table
-
 CREATE TABLE users (
 userID INT UNSIGNED NOT NULL AUTO_INCREMENT,
 username VARCHAR(20) NOT NULL,
@@ -21,9 +19,9 @@ last_login_date INT DATETIME NOT NULL,
 messageBoardID INT UNSIGNED,
 PRIMARY KEY (userID),
 FOREIGN KEY (messageBoardID) references
-messsageBoard (messageBoardID),
+messsageboard (messageBoardID),
 UNIQUE (username),
-UNIQUE (pro_pic_loc),
+UNIQUE (pro_pic_loc)
 );
 
 CREATE TABLE tribe (
@@ -33,9 +31,9 @@ tribe_pic_loc VARCHAR(20) NOT NULL,
 messsageBoardID INT UNSIGNED,
 PRIMARY KEY (tribeID),
 FOREIGN KEY (messageBoardID) references
-messsageBoard (messageBoardID),
+messsageboard (messageBoardID),
 UNIQUE (tribename),
-UNIQUE (tribe_pic_loc),
+UNIQUE (tribe_pic_loc)
 );
 
 CREATE TABLE tribeMembership (
@@ -48,13 +46,25 @@ FOREIGN KEY (tribeID) references
 tribe (tribeID),
 );
 
+CREATE TABLE messageboard (
+messageBoardID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+userID INT UNSIGNED,
+tribeID INT UNSIGNED,
+PRIMARY KEY (messageBoardID),
+FOREIGN KEY (userID) references
+users (userID),
+FOREIGN KEY (tribeID) references
+tribe (tribeID),
+);
+
 
 CREATE TABLE messageboardposts (
-messageBoardID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+messageBoardID INT UNSIGNED NOT NULL,
 postID INT UNSIGNED NOT NULL,
-PRIMARY KEY (messageBoardID),
+FOREIGN KEY (messageBoardID) references
+messageboard (messageBoardID),
 FOREIGN KEY (postID) references
-posts (postID),
+posts (postID)
 );
 
 CREATE TABLE posts (
@@ -64,6 +74,6 @@ userID INT UNSIGNED NOT NULL,
 message NVARCHAR(500),
 PRIMARY KEY (postID),
 FOREIGN KEY (userID) references
-users (userID),
+users (userID)
 );
 
