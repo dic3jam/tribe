@@ -4,6 +4,7 @@ include '../trait/trait-authlogin.php';
 include '../trait/trait-username.php';
 include '../trait/trait-password.php';
 include '../include/queries.php';
+include 'class-dbc.php';
 /* class - User
  * Enables user access to tribe.com. 
  * Provides functions for registration, login
@@ -28,29 +29,29 @@ class User {
 	private string $pro_pic_loc;
 	private string $about;
 	private int $logins;
-	private int $messageBoarID;
+	private int $messageBoardID;
 	private string $last_login_date;
 	private array /*int*/ $tribe_memberships;
 
 	//constructors
 
-	public function __construct(array $queries, object $dbc){
+	public function __construct(array $queries){
 		check_login();
 		$this->userID = intval($_COOKIE['value']);
 		//admin
-		$this->dbc = $dbc;
+		$this->dbc = new tribe-dbc();
 		$this->queries = $queries;
 		//user properties
 		$this->username = getUsername();
 		$this->password = getPassword();
 		$this->firstName = getFirstName();
 		$this->lastName = getLastName();
-		$this->paassword_creation_date = getPasswordCreateDate();
+		$this->password_creation_date = getPasswordCreateDate();
 		$this->user_creation_date = getUserCreationDate();
 		$this->pro_pic_loc = getProPic();
 		$this->about = getAbout();
 		$this->logins = getLogins();
-		$this->messageBoarID = getMessageBoardID();
+		$this->messageBoardID = getMessageBoardID();
 		$this->last_login_date = getLastLoginDate();
 		$this->tribe_memberships = getAllTribalMemberships();
 		repOk();
@@ -117,11 +118,11 @@ class User {
 			$_POST['firstName'].
 			$_POST['lastName'],
 			$_POST['pro_pic_loc'].
-			$_POST['about'],
-			$_POST['messageBoardID']))
-		
+			$_POST['about']
+			)){
+			createMessageBoardID(getUserID($username));
 			return true;
-		else
+		}else
 			return false;
 
 	}
@@ -137,6 +138,7 @@ class User {
 		$userID = getUserID($username);
 		if(checkPassword($userID, $password)){
 			createLoginToken($username, $userID);
+			updateLogins($userID);	
 			return true;
 		} else 
 			return false;
@@ -152,9 +154,10 @@ class User {
 	 */
 	public static function changePassword(string $username, string $password, string $newPassword) : boolean{
 		$userID = getUserID($username);
-		if(checkPassword($userID, $newPassword))
+		if(checkPassword($userID, $newPassword)){
+			setPasswordCreateDate($userID);
 			return setPassword($newPassword, $userID);
-		else
+		}else
 			return false;
 	}
 
@@ -172,6 +175,7 @@ class User {
 		return setcookie($username, strval($userID));	
 	}
 
+	//TODO in trait wuth runQuery
 	/* function execQuery 
 	 *  Performs the query bounding, execution, and returns the result
 	 *  This function will only return queries of a singular result
@@ -197,6 +201,7 @@ class User {
 			return $result;
 	}
 
+	//TODO in trait wuth execQuery
 	/* function runQuery
 	 * used by the getters to funnel arguments to execQuery
 	 * @param string q - the name of SQL query to perform
@@ -206,12 +211,12 @@ class User {
 	 * @return the result of the query (can be of any type)
 	 */
 	private function runQuery(string $q, string $boundValueTypes, string $errorMessage, ...$params) {
+		$dbc = new tribe-dbc();
 		try {
-			return execQuery(queries[$q], $this->dbc, $boundValueTypes, ...$params);	
+			return execQuery(queries[$q], $dbc, $boundValueTypes, ...$params);	
 		} catch(Exception $e) {
 			echo $e->getMessage() . $errorMessage;		
 		}
-
 	}
 
 	//getters
@@ -271,7 +276,7 @@ class User {
 	//setters
 
 	private function setPassword(string $password, int $userid) : boolean {
-		return runQuery('setPassword', 's', " failed to set new password", $userid);
+		return runQuery('setPassword', 'si', " failed to set new password", $userid);
 	}
 
 	//for adding to tribe, adding/removing council member status	
@@ -301,20 +306,21 @@ class User {
 	}
 
 	//adds 1 to number of logins
-	private function updateLogins() : boolean {
-		return runQuery('updateLogins', 'i', " failed to update logins", $this->userID);
+	private function updateLogins(int $userID) : boolean {
+		return runQuery('updateLogins', 'i', " failed to update logins", $userID);
 	}
 
-	private function setMessageBoardID() : boolean {
-		return runQuery('setMessageBoardID', 'i', " failed to update logins", $this->userID);
+	private function createMessageBoardID() : boolean {
+		return runQuery('createMessageBoardID', 'i', " failed to create messageBoardID", $this->userID);
 	}
 
-	private function setPasswordCreateDate() : boolean {
-		return runQuery('setPasswordCreateDate', 'i', " failed to set passwordCreateDate", $this->userID);
+	private function setPasswordCreateDate(int $userID) : boolean {
+		return runQuery('setPasswordCreateDate', 'i', " failed to set passwordCreateDate", $userID);
 	}
 
-	private function setLastLoginDate() : boolean {
-		return runQuery('setLastLoginDate', 'i', " failed to update last_login_date", $this->userID);
+	//$date must be in mysql datetime default format
+	private function setLastLoginDate(string $date) : boolean {
+		return runQuery('setLastLoginDate', 'si', " failed to update last_login_date", $date, $this->userID);
 	}
 
 	private function setUserCreationDate() : boolean {

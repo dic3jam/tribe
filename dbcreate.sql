@@ -30,7 +30,7 @@ CREATE TABLE tribe (
 tribeID INT UNSIGNED NOT NULL AUTO_INCREMENT,
 tribename VARCHAR(40) NOT NULL,
 tribe_pic_loc VARCHAR(20) NOT NULL,
-messsageBoard INT UNSIGNED,
+messsageBoardID INT UNSIGNED,
 PRIMARY KEY (tribeID),
 FOREIGN KEY (messageBoardID) references
 messsageBoard (messageBoardID),
@@ -49,7 +49,7 @@ tribe (tribeID),
 );
 
 
-CREATE TABLE messageboard (
+CREATE TABLE messageboardposts (
 messageBoardID INT UNSIGNED NOT NULL AUTO_INCREMENT,
 postID INT UNSIGNED NOT NULL,
 PRIMARY KEY (messageBoardID),
