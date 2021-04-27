@@ -1,6 +1,5 @@
 <?php 
 declare(strict_types=1);
-include '../include/queries.php';
 /* trait - username
  * defines a set of functions for 
  * manipulating usernames
@@ -14,28 +13,43 @@ trait username {
 	 * @return int the userID of that username, or -1 if 
 	 * the userName is not in the database
 	 */
-	private function checkUsername(string $username) : boolean {
-
+	public function checkUsername(string $username, object $dbc) : bool {
+		try {
+			self::getUsername($username, $dbc);
+		} catch(Exception $e){
+			return false;
+		} return true;	
 	}
 
 	/* function changeUsername
 	 * Changes a username to the new string
-	 * @param string username - the current username
+	 * @param int userID 
 	 * @param string newUsername - the new userName
-	 * @return boolean indicating success or failure
+	 * @return bool indicating success or failure
 	 */
-	private function changeUsername(string $username, string $newUsername) : boolean {}
+	public function changeUsername(int $userID, string $newUsername, object $dbc) : bool {
+		return self::setUsername($newUsername, $userID, $dbc);	
+	}
 
 	/* function validUsername
 	 * validates if username is appropriate
 	 * @param string username - the username to check
 	 * @throws invalidUserNameException if a non-valid username is provided
-	 * @return boolean true if valid, false if not
+	 * @return bool true if valid, false if not
 	 */
-	private function validUsername(string $username) : boolean {
+	public function validUsername(string $username) : bool {
 		//will implement for v2 for now all usernames are valid
 		return true;
 	}
+
+	public function getUsername(int $userID, object $dbc) : string {
+		return queryFunctions::runQuery('getUsername', $dbc,'i', " failed to get username", $userID);
+	}
+
+	public function setUsername(string $newUsername, int $userID, object $dbc) : string {
+		return queryFunctions::runQuery('setUsername', $dbc,'i', " failed to set username", $ $newUsername, $userID);
+	}
+
 
 }
 ?>

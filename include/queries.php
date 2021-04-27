@@ -1,6 +1,5 @@
 <?php
 $queries = array (
-//class user
 	//getters
 	"getUserID" => "SELECT userID FROM users WHERE username = ?", //s
 	"getProPic" => "SELECT pro_pic_loc FROM users WHERE userID = ?", //ret string, int 
@@ -33,7 +32,6 @@ $queries = array (
 	"setLastLoginDate" => "UPDATE users (last_login_date) VALUES NOW() WHERE userID=(?)", //int
 	"setUserCreationDate" => "UPDATE users (user_creation_date) VALUES NOW() WHERE userID=(?)", //int
 
-//class tribe
 	//getters
 	"getTribeName" => "SELECT tribename FROM tribe WHERE tribeID = ?",
 	"getTribeID" => "SELECT tribeID from tribe WHERE tribename = ?",

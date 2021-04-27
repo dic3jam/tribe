@@ -1,22 +1,23 @@
 <?php 
 declare(strict_types=1);
-include '../trait/trait-authlogin.php';
-include '../trait/trait-username.php';
-include '../trait/trait-password.php';
-include '../include/queries.php';
+include 'trait/trait-authlogin.php';
+include 'trait/trait-username.php';
+include 'trait/trait-password.php';
+include 'trait/trait-queryFunctions.php';
+include 'trait/trait-messageBoardID.php';
 include 'class-dbc.php';
 /* class - User
  * Enables user access to tribe.com. 
- * Provides functions for registration, login
- * edititng info, and displaying a profile page
+ * Provides functions for edititng info, 
+ * and displaying a profile page
  */
-class User {
-	use username; 
-	use password;
+class user {
+	use queryFunctions; 
 	use authLogin;
+	use password;
+	use username;
 
 	//admin
-	private array $queries;
 	private object $dbc;
 	private array $auth;
 	//User properties
@@ -39,8 +40,7 @@ class User {
 		check_login();
 		$this->userID = intval($_COOKIE['value']);
 		//admin
-		$this->dbc = new dbc();
-		$this->queries = $queries;
+		$this->dbc = new dbc($queries);
 		//user properties
 		$this->username = getUsername();
 		$this->password = getPassword();
@@ -50,6 +50,7 @@ class User {
 		$this->user_creation_date = getUserCreationDate();
 		$this->pro_pic_loc = getProPic();
 		$this->about = getAbout();
+		updateLogins($this->userID);	
 		$this->logins = getLogins();
 		$this->messageBoardID = getMessageBoardID();
 		$this->last_login_date = getLastLoginDate();
@@ -59,7 +60,8 @@ class User {
 
 	//repOK, toString
 
-	private function repOk() : boolean {
+	private function repOk() : bool {
+		assert($this->dbc->connect_errno == 0);
 		assert(strlen($this->username) < 20); 
 		assert(strlen($this->password) < 20);
 		assert(strlen($this->firstName) < 20);
@@ -85,246 +87,86 @@ class User {
 			", message board ID: " . (strval($this->messageBoardID)) .
 			", last login date: " . $this->last_login_date . 
 			", member of " . (strval(count(tribe_memberships))) . " tribes" .
-			", about: " . $this->about
+			", about: " . $this->about .
+			"DBC: " . $this->dbc->toString()
 			;
-	}
-	
-	//static functions
-
-	/* function register
-	 * Performs a user registration by sending new info
-	 * to the database
-	 * Note: Sanitizing user input is handled at the form
-	 * @param string username - from $_POST
-	 * @param string password - from $_POST
-	 * @return boolean upon success
-	 * @throws invalidPasswordException, invalidUserException, 
-	 * passwordLengthException
-	 */
-	public static function register(string $username, string $password) : boolean{
-		if(validPassword($password));
-		else {
-			throw new invalidPasswordException();
-			return false;
-		}
-		if(validUsername($username));
-		else{
-			throw new invalidUserException();
-			return false;
-		}
-		if(runQuery('createNewUser', 'ssssssi', " failed to create new user", 
-			$username, 
-			$password, 
-			$_POST['firstName'].
-			$_POST['lastName'],
-			$_POST['pro_pic_loc'].
-			$_POST['about']
-			)){
-			createMessageBoardID(getUserID($username));
-			return true;
-		}else
-			return false;
-
-	}
-
-	/* function login
-	 * Completes a user login by checking username 
-	 * and password and providing a login cookie
-	 * @param string username - username from $_POST
-	 * @param string password - password from $_POST
-	 * @return boolean if login successful, constructs a login cookie
-	 */
-	public static function login(string $username, string $password) : boolean{
-		$userID = getUserID($username);
-		if(checkPassword($userID, $password)){
-			createLoginToken($username, $userID);
-			updateLogins($userID);	
-			return true;
-		} else 
-			return false;
-	}
-
-	/* function changePassword
-	 * Checks a user login and if correct, queries the
-	 * database to change the password to the new password string 
-	 * @param string username - username from $_POST
-	 * @param string password - password from $_POST
-	 * @param string newPassword - new password from $_POST
-	 * @return boolean if change password was successful
-	 */
-	public static function changePassword(string $username, string $password, string $newPassword) : boolean{
-		$userID = getUserID($username);
-		if(checkPassword($userID, $newPassword)){
-			setPasswordCreateDate($userID);
-			return setPassword($newPassword, $userID);
-		}else
-			return false;
-	}
-
-	//helpers
-
-	/* function createLoginToken
-	 * Generates the login cookie
-	 * for a successful login
-	 * @param string username
-	 * @param int userID
-	 * @return boolean indicating success
-	 * note: for v1 all cookies are just userId and the "key"
-	 */
-	private function createLoginToken(string $username, int $userID) : boolean {
-		return setcookie($username, strval($userID));	
-	}
-
-	//TODO in trait wuth runQuery
-	/* function execQuery 
-	 *  Performs the query bounding, execution, and returns the result
-	 *  This function will only return queries of a singular result
-	 *  @param string q - the query - always from the queries array
-	 *  @param dbc - the database connection
-	 *  @param boundValueTypes - the string representing the types of the query 
-	 *  items
-	 *  @return the result of the query (can be of any type)
-	 *  @throws queryFailedException if the query fails
-	 */
-	private function execQuery(string $q, object $dbc, string $boundValueTypes, ...$params) {
-		$stmt = mysqli_prepare($dbc, $q);
-		mysqli_stmt_bind_param($stmt, $boundValueTypes, ...$params);
-		$result = NULL;
-		mysqli_stmt_execute($stmt);
-		mysqli_stmt_bind_result($stmt, $result);
-		mysqli_stmt_fetch($stmt);
-		if($result == NULL || $result == false)
-			throw new queryFailedException();
-		else if (str_contains($result, "row"))
-			return true;
-		else
-			return $result;
-	}
-
-	//TODO in trait wuth execQuery
-	/* function runQuery
-	 * used by the getters to funnel arguments to execQuery
-	 * @param string q - the name of SQL query to perform
-	 * @param boundValueTypes - the string representing the types of the query items
-	 * @param errorMessage - the getter specific error message to be displayed if an 
-	 * exception is thrown
-	 * @return the result of the query (can be of any type)
-	 */
-	private function runQuery(string $q, string $boundValueTypes, string $errorMessage, ...$params) {
-		$dbc = new dbc();
-		try {
-			return execQuery(queries[$q], $dbc, $boundValueTypes, ...$params);	
-		} catch(Exception $e) {
-			echo $e->getMessage() . $errorMessage;		
-		}
 	}
 
 	//getters
-
-	private function getUserID(string $username) : int {
-		return runQuery('getUserID', 's', " failed to get userID", $username);
-	}
-
+	
 	private function getProPic() : string {
-		return runQuery('getProPic', 'i', " failed to get pro_pic_loc", $this->userID);
+		return queryFunctions::runQuery('getProPic', $this->dbc, 'i', " failed to get pro_pic_loc", $this->userID);
 	}
 
 	private function getAbout() : string {
-		return runQuery('getAbout', 'i', " failed to get about", $this->userID);
+		return queryFunctions::runQuery('getAbout', $this->dbc, 'i', " failed to get about", $this->userID);
 	}
-
-	private function getUsername() : string {
-		return runQuery('getUsername', 'i', " failed to get username", $this->userID);
-	}
-
-	private function getPassword(int $userID) : string {
-		return runQuery('getPassword', 'i', " failed to get password", $userID);
-	}
-
+	
 	private function getFirstName() : string {	
-		return runQuery('getFirstName', 'i', " failed to get first name", $this->userID);
+		return queryFunctions::runQuery('getFirstName', $this->dbc, 'i', " failed to get first name", $this->userID);
 	}
 
 	private function getLastName() : string {
-		return runQuery('getLastName', 'i', " failed to get last name", $this->userID);
+		return queryFunctions::runQuery('getLastName', $this->dbc, 'i', " failed to get last name", $this->userID);
 	}
 
 	private function getLogins() : int {
-		return runQuery('getLogins', 'i', " failed to get logins", $this->userID);
+		return queryFunctions::runQuery('getLogins', $this->dbc, 'i', " failed to get logins", $this->userID);
 	}
-
-	private function getMessageBoardID() : int {		
-		return runQuery('getMessageBoardID', 'i', " failed to get messageBoardID", $this->userID);
-	}
-
-	private function getPasswordCreateDate() : string {
-		return runQuery('getPasswordCreatedate', 'i', " failed to get passwordCreateDate", $this->userID);
-	}
-
+	
 	private function getAllTribalMemberships() : string {
-		return runQuery('getAllTribalMemberships', 'i', " failed to get allTribalMemberships", $this->userID);
+		return queryFunctions::runQuery('getAllTribalMemberships', $this->dbc, 'i', " failed to get allTribalMemberships", $this->userID);
 	}
 
 	private function getLastLoginDate() : string {
-		return runQuery('getLastLoginDate', 'i', " failed to get lastLoginDate", $this->userID);
+		return queryFunctions::runQuery('getLastLoginDate', $this->dbc, 'i', " failed to get lastLoginDate", $this->userID);
 	}
 
 	private function getUserCreationDate() : string {	
-		return runQuery('getUserCreationDate', 'i', " failed to get userCreationDate", $this->userID);
+		return queryFunctions::runQuery('getUserCreationDate', $this->dbc, 'i', " failed to get userCreationDate", $this->userID);
 	}
 
 	//setters
-
-	private function setPassword(string $password, int $userid) : boolean {
-		return runQuery('setPassword', 'si', " failed to set new password", $userid);
-	}
-
+	
 	//for adding to tribe, adding/removing council member status	
 	//TODO see what the return array looks like for this
-	private function modTribeMembership(int $tribeID, boolean $isCouncilMember) : boolean {
+	private function modTribeMembership(int $tribeID, bool $isCouncilMember) : boolean {
 		$result = NULL;
-		$result = runQuery('modTribeMembership','iis', $this->userID, $tribeID, $isCouncilMember);	
+		$result = queryFunctions::runQuery('modTribeMembership', $this->dbc, 'iis', $this->userID, $tribeID, $isCouncilMember);	
 		$this->tribe_memberships = getAllTribalMemberships();
 		repOk();
 
 	}
 
-	private function setProPic() : boolean {
-		return runQuery('setProPic', 'si', " failed to set pro_pic_loc", $this->pro_pic_loc, $this->userID);
+	private function setProPic() : bool {
+		return queryFunctions::runQuery('setProPic', $this->dbc, 'si', " failed to set pro_pic_loc", $this->pro_pic_loc, $this->userID);
 	}
 
-	private function setAbout() : boolean {
-		return runQuery('setAbout', 'si', " failed to set about", $this->about, $this->userID);
+	private function setAbout() : bool {
+		return queryFunctions::runQuery('setAbout', $this->dbc, 'si', " failed to set about", $this->about, $this->userID);
 	}
 
-	private function setFirstName() : boolean {
-		return runQuery('setFirstName', 'si', " failed to set firstName", $this->firstName, $this->userID);
+	private function setFirstName() : bool {
+		return queryFunctions::runQuery('setFirstName', $this->dbc, 'si', " failed to set firstName", $this->firstName, $this->userID);
 	}
 
-	private function setLastName() : boolean {
-		return runQuery('setLastName', 'si', " failed to set firstName", $this->lastName, $this->userID);
+	private function setLastName() : bool {
+		return queryFunctions::runQuery('setLastName', $this->dbc, 'si', " failed to set firstName", $this->lastName, $this->userID);
 	}
 
 	//adds 1 to number of logins
-	private function updateLogins(int $userID) : boolean {
-		return runQuery('updateLogins', 'i', " failed to update logins", $userID);
+	private function updateLogins(int $userID) : bool {
+		return queryFunctions::runQuery('updateLogins', $this->dbc, 'i', " failed to update logins", $userID);
 	}
 
-	private function createMessageBoardID() : boolean {
-		return runQuery('createMessageBoardID', 'i', " failed to create messageBoardID", $this->userID);
-	}
-
-	private function setPasswordCreateDate(int $userID) : boolean {
-		return runQuery('setPasswordCreateDate', 'i', " failed to set passwordCreateDate", $userID);
-	}
 
 	//$date must be in mysql datetime default format
-	private function setLastLoginDate(string $date) : boolean {
-		return runQuery('setLastLoginDate', 'si', " failed to update last_login_date", $date, $this->userID);
+	private function setLastLoginDate(string $date) : bool {
+		return queryFunctions::runQuery('setLastLoginDate', $this->dbc, 'si', " failed to update last_login_date", $date, $this->userID);
 	}
 
-	private function setUserCreationDate() : boolean {
-		return runQuery('setUserCreationDate', 'i', " failed to update user_creation_date", $this->userID);
+	private function setUserCreationDate() : bool {
+		return queryFunctions::runQuery('setUserCreationDate', $this->dbc, 'i', " failed to update user_creation_date", $this->userID);
 	}
 }
  ?>

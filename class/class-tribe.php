@@ -1,5 +1,5 @@
 <?php 
 
 
-	private function removeTribeMembership() : boolean {}
+	private function removeTribeMembership() : bool {}
  ?>

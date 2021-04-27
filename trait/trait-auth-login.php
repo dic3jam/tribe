@@ -9,7 +9,7 @@ trait authLogin {
 	 * will redirect to login page if no login cookie is set
 	 * @return boolean indicating success
 	 */
-	public function check_login() : boolean {
+	public function check_login() : bool {
 		if($_COOKIE['value']) {
 			return true;
 		} else
