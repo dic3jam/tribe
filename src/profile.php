@@ -1,5 +1,5 @@
 <?php
-var_dump($_COOKIE);
+include 'errors.php';
 ?>
 <!DOCTYPE html>
 <html>

@@ -17,8 +17,10 @@ trait username {
 		try {
 			self::getUsername($username, $dbc);
 		} catch(Exception $e){
-			return false;
-		} return true;	
+				throw new invalidUsernameException("Username is incorrect");
+				return false;
+		} 
+		return true;	
 	}
 
 	/* function changeUsername
@@ -43,11 +45,11 @@ trait username {
 	}
 
 	public function getUsername(int $userID, object $dbc) : string {
-		return queryFunctions::runQuery('getUsername', $dbc,'i', " failed to get username", $userID);
+		return $dbc->runQuery('getUsername','i', " failed to get username", $userID);
 	}
 
 	public function setUsername(string $newUsername, int $userID, object $dbc) : string {
-		return queryFunctions::runQuery('setUsername', $dbc,'i', " failed to set username", $ $newUsername, $userID);
+		return $dbc->runQuery('setUsername','i', " failed to set username", $newUsername, $userID);
 	}
 
 

@@ -12,12 +12,15 @@ trait password {
 	 * @param int userId
 	 * @param string password
 	 * @return bool indicating success
+	 * @throws invalidPasswordException
 	 */
 	public function checkPassword(int $userID, string $password, object $dbc) : bool {
 		if(sha1($password) == self::getPassword($userID, $dbc))
 			return true;
-		else
+		else{
+			throw new invalidPasswordException("Incorrect password");
 			return false;		
+		}
 	}
 
 	/* function validPassword
@@ -30,8 +33,10 @@ trait password {
 	public function validPassword(string $password) : bool {
 		if(strlen($password) < 20)
 			return true;
-		else
+		else{
+			throw new passwordLengthException("Password is too long");
 			return false;
+		}
 	}
 
 	/* function changePassword
@@ -43,28 +48,26 @@ trait password {
 	 * @return bool if change password was successful
 	 */
 	public function changePassword(string $username, string $password, string $newPassword, object $dbc) : bool{
-		$userID = getUserID($username);
-		if(self::checkPassword($userID, $newPassword)){
-			self::setPasswordCreateDate($userID);
-			return self::setPassword($newPassword, $userID);
-		}else
-			return false;
+			$userID = ID::getUserID($username, $dbc);
+			self::checkPassword($userID, $newPassword, $dbc);
+			self::setPasswordCreateDate($userID, $dbc);
+			self::setPassword($newPassword, $userID, $dbc);
 	}
 
 	private function getPassword(int $userID, object $dbc) : string {
-		return queryFunctions::runQuery('getPassword', $dbc,'i', " failed to get password", $userID);
+		return $dbc->runQuery('getPassword','i', $userID);
 	}
 
 	private function setPassword(string $password, int $userid, object $dbc) : bool {
-		return queryFunctions::runQuery('setPassword', $dbc,'si', " failed to set new password", $userid);
+		return $dbc->runQuery('setPassword','si', $userid);
 	}
 
 	private function setPasswordCreateDate(int $userID, object $dbc) : bool {
-		return queryFunctions::runQuery('setPasswordCreateDate', $dbc,'i', " failed to set passwordCreateDate", $userID);
+		return $dbc->runQuery('setPasswordCreateDate','i', $userID);
 	}
 
-	private function getPasswordCreateDate(object $dbc) : string {
-		return queryFunctions::runQuery('getPasswordCreatedate', $dbc,'i', " failed to get passwordCreateDate", $this->userID);
+	private function getPasswordCreateDate(int $userID, object $dbc) : string {
+		return $dbc->runQuery('getPasswordCreatedate','i', $userID);
 	}
 
 }

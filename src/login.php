@@ -1,18 +1,18 @@
 <?php 
 include 'class/class-login.php';
-include 'include/queries.php';
+include 'errors.php';
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if(!empty($_POST['username']) && !empty($_POST['password'])){
 		try {
-			$user = new login((string)$_POST['username'], (string)$_POST['password'], $queries);
+			$user = new login((string)$_POST['username'], (string)$_POST['password']);
 			echo $user->toString();
+			$user->advance();
 		} catch (Exception $e) {
-			$e->getMessage();
+			$error[] = $e->getMessage();
 			header("Location: login.php");
 		}
-		$user->advance();
 	}else
-		echo "<p>Bad login attempt</p>";
+		$error[] = "<p>Bad login attempt</p>";
 }
 ?>
 <!DOCTYPE html>

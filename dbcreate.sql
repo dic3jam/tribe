@@ -24,7 +24,6 @@ CREATE TABLE tribe (
 tribeID INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 tribename VARCHAR(40) NOT NULL,
 tribe_pic_loc VARCHAR(20) NOT NULL,
-messageBoardID INT UNSIGNED,
 UNIQUE (tribename),
 UNIQUE (tribe_pic_loc)
 );
@@ -52,10 +51,6 @@ creation_time DATETIME NOT NULL,
 userID INT UNSIGNED NOT NULL,
 message NVARCHAR(500)
 );
-
-ALTER TABLE tribe 
-ADD FOREIGN KEY (messageBoardID) references messageboard(messageBoardID)
-;
 
 ALTER TABLE tribeMembership 
 ADD FOREIGN KEY (userID) references users(userID),

@@ -14,7 +14,7 @@ trait authLogin {
 			return true;
 		} else
 			//TODO redirect to login AND display error message that not logged in	
-			header("Location: login.php");
+			throw new notLoggedInException();
 			return false;
 	}
 }

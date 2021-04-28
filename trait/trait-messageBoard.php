@@ -5,14 +5,13 @@ declare(strict_types=1);
  * message boards
  */
 trait messageBaord {
-	use queryFunctions;
 
-	public function getMessageBoardID(object $dbc) : int {		
-		return queryFunctions::runQuery('getMessageBoardID', $dbc, 'i', " failed to get messageBoardID", $this->userID);
+	public function getMessageBoardID(object $dbc, int $userID) : int {		
+		return $dbc->runQuery('getMessageBoardID', 'i', $userID);
 	}
 
-	public function createMessageBoardID(object $dbc) : bool {
-		return queryFunctions::runQuery('createMessageBoardID', $dbc,'i', " failed to create messageBoardID", $this->userID);
+	public function createMessageBoardID(object $dbc, int $userID) : bool {
+		return $dbc->runQuery('createMessageBoardID','i', $userID);
 	}
 
 }
