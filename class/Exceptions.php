@@ -42,4 +42,11 @@ class notLoggedInException extends RuntimeException {
 	}
 }
 
+class invalidPictureException extends Exception {
+	public function __construct($message = "Invalid picture upload", $code = 0, Throwable $previous = null) {
+
+			parent::__construct($message, $code, $previous);
+		}
+}
+
 ?>

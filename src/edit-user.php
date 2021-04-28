@@ -1,13 +1,9 @@
-<?php
-include 'errors.php';
-var_dump($_COOKIE);
-?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>TRIBE</title>
     </head>
     <body>
-        <h1>PROFILE PAGE</h1>
+        <h1>EDIT USER</h1>
     </body>
 </html>

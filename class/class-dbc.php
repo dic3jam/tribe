@@ -77,6 +77,7 @@ class dbc extends mysqli {
 		$stmt = $this->prepare($this->queries_array[$q]);
 		if(!$stmt)
 			throw new queryFailedException("Query " . $q . " has improper syntax");
+		//$this->mysqli_real_escape_string(...$params);
 		$stmt->bind_param($boundValueTypes, ...$params);
 		$stmt->execute();
 		$initial_result = $stmt->get_result();

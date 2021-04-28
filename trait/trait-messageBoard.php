@@ -4,7 +4,7 @@ declare(strict_types=1);
  * functions for controlling
  * message boards
  */
-trait messageBaord {
+trait messageBoard {
 
 	public function getMessageBoardID(object $dbc, int $userID) : int {		
 		return $dbc->runQuery('getMessageBoardID', 'i', $userID);

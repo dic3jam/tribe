@@ -29,41 +29,23 @@ class login {
 	 * @throws badLoginException if login was unsuccessful
 	 */
 	public function __construct(string $username, string $password){
-		try {
-			$this->dbc = new dbc();
-			$this->userID = ID::getUserID($username, $this->dbc);
-			password::checkPassword((int)$this->userID, $password, $this->dbc);
-			$this->username = $username;
-			$this->password = $password;
-			$this->isValidUser = true;
-			$this->isSetLogin = $this->createLoginToken($this->username, $this->userID, 10000);
-		} catch (Exception $e) { 
-			$errors[] = $e->getMessage();	
-			if(isset($_COOKIE['value']))
-				$this->createLoginToken($this->username, $this->userID, -3600);
-			$_POST['username'] = '';
-			$_POST['password'] = '';
-			header("Location: login.php");
-			exit();
-		}
+		$this->dbc = new dbc();
+		$this->userID = ID::getUserID($username, $this->dbc);
+		password::checkPassword((int)$this->userID, $password, $this->dbc);
+		$this->username = $username;
+		$this->password = $password;
+		$this->isValidUser = true;
+		$this->isSetLogin = $this->createLoginToken($this->username, $this->userID, 10000);
 		$this->repOk();
 	}
 
 	private function repOk() : void {
-		try{
-			assert($this->dbc->connect_errno == 0);
-			assert($this->userID != NULL);
-			assert($this->username != NULL);
-			assert($this->password != NULL);
-			assert($this->isValidUser == true);
-			assert($this->isSetLogin == true);
-		}catch (Exception $e) {
-			$errors[] = "Login invalid";
-			if(isset($_COOKIE['value']))
-				$this->createLoginToken($this->username, $this->userID, -3600);
-			header("Location: login.php");
-			exit();
-		}
+		assert($this->dbc->connect_errno == 0);
+		assert($this->userID != NULL);
+		assert($this->username != NULL);
+		assert($this->password != NULL);
+		assert($this->isValidUser == true);
+		assert($this->isSetLogin == true);
 	}
 
 	public function toString() : string {
@@ -79,7 +61,7 @@ class login {
 
 	public function advance() : bool {
 		$this->repOk();
-		header("Location: src/profile.php");
+		header("Location: profile.php");
 		return true;
 	}
 

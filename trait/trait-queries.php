@@ -17,7 +17,7 @@ static $queries = array (
 	"getMessageBoardID" => "SELECT messageBoardID from messageboard WHERE userID = ?", //ret s, i
 	
 	//setters
-	"createNewUser" => "INSERT INTO users (username, password, password_creation_date, user_creation_date, firstname, lastname, pro_pic_loc, about, logins, last_login_date) VALUES (?, SHA1(?), NOW(), NOW(), ?, ?, ?, ?, 1, NOW())", //string string string string string string 
+	"createNewUser" => "INSERT INTO users (username, password, password_creation_date, user_creation_date, firstname, lastname, pro_pic_loc, about, logins, last_login_date) VALUES (?, SHA1(?), NOW(), NOW(), ?, ?, ?, ?, 1, NOW())", //username, password, firstname, lastname, pro_pic_loc, about, ssssss 
 	"modTribeMembership" => "UPDATE tribeMembership (userID, tribeID, councilMember) VALUES (?,?,?)", //int int boolean
 	"addTribeMembership" => "INSERT into tribeMembership (userID, tribeID, councilMember) VALUES (?,?,?)",
 	"setProPic" => "UPDATE users (pro_pic_loc) VALUES (?) WHERE userID=(?)", //string int 
