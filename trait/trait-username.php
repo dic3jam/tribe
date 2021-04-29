@@ -45,11 +45,11 @@ trait username {
 	}
 
 	public function getUsername(int $userID, object $dbc) : string {
-		return $dbc->runQuery('getUsername','i', " failed to get username", $userID);
+		return $dbc->runQuery('getUsername','i', $userID);
 	}
 
 	public function setUsername(string $newUsername, int $userID, object $dbc) : string {
-		return $dbc->runQuery('setUsername','i', " failed to set username", $newUsername, $userID);
+		return $dbc->runQuery('setUsername','i', $newUsername, $userID);
 	}
 
 

@@ -35,7 +35,7 @@ class login {
 		$this->username = $username;
 		$this->password = $password;
 		$this->isValidUser = true;
-		$this->isSetLogin = $this->createLoginToken($this->username, $this->userID, 10000);
+		$this->isSetLogin = $this->createLoginToken($this->userID);
 		$this->repOk();
 	}
 
@@ -73,8 +73,9 @@ class login {
 	 * @return bool indicating success
 	 * note: for v1 all cookies are just userId and the "key"
 	 */
-	private function createLoginToken(string $username, int $userID, int $timeout) : bool {
-		return setcookie($username, strval($userID), $timeout);	
+	private function createLoginToken(int $userID) : bool {
+		$_SESSION['user'] = $userID;
+		return true;
 	}
 
 }

@@ -49,25 +49,25 @@ trait password {
 	 */
 	public function changePassword(string $username, string $password, string $newPassword, object $dbc) : bool{
 			$userID = ID::getUserID($username, $dbc);
-			self::checkPassword($userID, $newPassword, $dbc);
+			self::checkPassword($userID, $password, $dbc);
 			self::setPasswordCreateDate($userID, $dbc);
-			self::setPassword($newPassword, $userID, $dbc);
+			return self::setPassword($newPassword, $userID, $dbc);
 	}
 
-	private function getPassword(int $userID, object $dbc) : string {
+	public function getPassword(int $userID, object $dbc) : string {
 		return $dbc->runQuery('getPassword','i', $userID);
 	}
 
-	private function setPassword(string $password, int $userid, object $dbc) : bool {
-		return $dbc->runQuery('setPassword','si', $userid);
+	public function setPassword(string $password, int $userid, object $dbc) : bool {
+		return $dbc->runQuery('setPassword','si', $password, $userid);
 	}
 
-	private function setPasswordCreateDate(int $userID, object $dbc) : bool {
+	public function setPasswordCreateDate(int $userID, object $dbc) : bool {
 		return $dbc->runQuery('setPasswordCreateDate','i', $userID);
 	}
 
-	private function getPasswordCreateDate(int $userID, object $dbc) : string {
-		return $dbc->runQuery('getPasswordCreatedate','i', $userID);
+	public function getPasswordCreateDate(int $userID, object $dbc) : string {
+		return $dbc->runQuery('getPasswordCreateDate','i', $userID);
 	}
 
 }

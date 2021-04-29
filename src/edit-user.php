@@ -1,3 +1,7 @@
+<?php
+include 'errors.php';
+session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>

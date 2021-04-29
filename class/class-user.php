@@ -1,10 +1,10 @@
 <?php 
 declare(strict_types=1);
-include 'trait/trait-authlogin.php';
-include 'trait/trait-username.php';
-include 'trait/trait-password.php';
-include 'trait/trait-userID.php';
-include 'trait/trait-messageBoard.php';
+include '../trait/trait-auth-login.php';
+include '../trait/trait-username.php';
+include '../trait/trait-password.php';
+include '../trait/trait-ID.php';
+include '../trait/trait-messageBoard.php';
 include 'class-dbc.php';
 //require 'Exceptions.php';
 /* class - User
@@ -21,76 +21,61 @@ class user {
 
 	//admin
 	private object $dbc;
-	private array $auth;
 	//User properties
+	private int $userID;
 	private string $username;
 	private string $password;
-	private string $firstName;
-	private string $lastName;
+	public string $firstName;
+	public string $lastName;
 	private string $password_creation_date;
 	private string $user_creation_date;
-	private string $pro_pic_loc;
-	private string $about;
+	public string $pro_pic_loc;
+	public string $about;
 	private int $logins;
 	private int $messageBoardID;
 	private string $last_login_date;
-	private array /*int*/ $tribe_memberships;
+	public array /*associative*/ $tribe_memberships;
 
 	//constructors
 
 	public function __construct(){
-		try {
-			check_login();
-			$this->userID = intval($_COOKIE['value']);
-			//admin
-			$this->dbc = new dbc();
-			//user properties
-			$this->username = username::getUsername();
-			$this->password = password::getPassword();
-			$this->firstName = getFirstName();
-			$this->lastName = getLastName();
-			$this->password_creation_date = password::getPasswordCreateDate();
-			$this->user_creation_date = getUserCreationDate();
-			$this->pro_pic_loc = getProPic();
-			$this->about = getAbout();
-			updateLogins($this->userID);	
-			$this->logins = getLogins();
-			$this->messageBoardID = messageBoardgetMessageBoardID();
-			$this->last_login_date = getLastLoginDate();
-			$this->tribe_memberships = getAllTribalMemberships();
-		} catch (Exception $e) {
-				$errors[] = "User invalid";
-				if(isset($_COOKIE['value']))
-					$this->createLoginToken($this->username, $this->userID, -3600);
-				header("Location: login.php");
-				exit();
-		}
+		authLogin::check_login();
+		$this->userID = intval($_SESSION['user']);
+		//admin
+		$this->dbc = new dbc();
+		//user properties
+		$this->username = username::getUsername($this->userID, $this->dbc);
+		$this->password = password::getPassword($this->userID, $this->dbc);
+		$this->firstName = $this->getFirstName();
+		$this->lastName = $this->getLastName();
+		$this->password_creation_date = password::getPasswordCreateDate($this->userID, $this->dbc);
+		$this->user_creation_date = $this->getUserCreationDate();
+		$this->pro_pic_loc = $this->getProPic();
+		$this->about = $this->getAbout();
+		$this->updateLogins($this->userID);	
+		$this->logins = $this->getLogins();
+		$this->messageBoardID = messageBoard::getMessageBoardID($this->dbc, $this->userID);
+		$this->last_login_date = $this->getLastLoginDate();
+		$this->tribe_memberships = $this->getAllTribalMemberships();
 		$this->repOk();
 	}
 
 	//repOK, toString
 
 	private function repOk() : void {
-		try {
-			assert($this->dbc->connect_errno == 0);
-			assert(strlen($this->username) < 20); 
-			assert(strlen($this->password) < 20);
-			assert(strlen($this->firstName) < 20);
-			assert(strlen($this->lastName) < 40);
-			assert($this->paassword_creation_date != NULL);
-			assert($this->user_creation_date != NULL);
-			assert($this->pro_pic_loc != NULL);
-			assert(strlen($this->about) >= 0 && strlen($this->about) <= 100);
-			assert($this->logins >= 1);
-			assert($this->messageBoarID != NULL);
-			assert($this->last_login_date != NULL);
-			assert(count($this->tribe_memberships) >= 0);
-		} catch (Exception $e) {
-				if(isset($_COOKIE['value']))
-					$this->createLoginToken($this->username, $this->userID, -3600);
-				header("Location: login.php");
-				exit();
-		}
+		assert($this->dbc->connect_errno == 0);
+		assert(strlen($this->username) < 20); 
+		assert(strlen($this->password) < 20);
+		assert(strlen($this->firstName) < 20);
+		assert(strlen($this->lastName) < 40);
+		assert($this->password_creation_date != NULL);
+		assert($this->user_creation_date != NULL);
+		assert($this->pro_pic_loc != NULL);
+		assert(strlen($this->about) >= 0 && strlen($this->about) <= 100);
+		assert($this->logins >= 1);
+		assert($this->messageBoardID != NULL);
+		assert($this->last_login_date != NULL);
+		assert(count($this->tribe_memberships) >= 0);
 	}
 
 	public function toString() : string {
@@ -124,23 +109,23 @@ class user {
 	}
 
 	private function getLastName() : string {
-		return $this->dbc->runQuery('getLastName', 'i', " failed to get last name", $this->userID);
+		return $this->dbc->runQuery('getLastName', 'i', $this->userID);
 	}
 
 	private function getLogins() : int {
-		return $this->dbc->runQuery('getLogins', 'i', " failed to get logins", $this->userID);
+		return $this->dbc->runQuery('getLogins', 'i', $this->userID);
 	}
 	
-	private function getAllTribalMemberships() : string {
-		return $this->dbc->runQuery('getAllTribalMemberships', 'i', " failed to get allTribalMemberships", $this->userID);
+	private function getAllTribalMemberships() : array {
+		return $this->dbc->runQuery('getAllTribalMemberships', 'i', $this->userID);
 	}
 
 	private function getLastLoginDate() : string {
-		return $this->dbc->runQuery('getLastLoginDate', 'i', " failed to get lastLoginDate", $this->userID);
+		return $this->dbc->runQuery('getLastLoginDate', 'i', $this->userID);
 	}
 
 	private function getUserCreationDate() : string {	
-		return $this->dbc->runQuery('getUserCreationDate', 'i', " failed to get userCreationDate", $this->userID);
+		return $this->dbc->runQuery('getUserCreationDate', 'i', $this->userID);
 	}
 
 	//setters
@@ -148,42 +133,39 @@ class user {
 	//for adding to tribe, adding/removing council member status	
 	//TODO see what the return array looks like for this
 	private function modTribeMembership(int $tribeID, bool $isCouncilMember) : boolean {
-		$result = NULL;
 		$result = $this->dbc->runQuery('modTribeMembership', 'iis', $this->userID, $tribeID, $isCouncilMember);	
 		$this->tribe_memberships = getAllTribalMemberships();
 		$this->repOk();
-
 	}
 
 	private function setProPic() : bool {
-		return $this->dbc->runQuery('setProPic', 'si', " failed to set pro_pic_loc", $this->pro_pic_loc, $this->userID);
+		return $this->dbc->runQuery('setProPic', 'si', $this->pro_pic_loc, $this->userID);
 	}
 
 	private function setAbout() : bool {
-		return $this->dbc->runQuery('setAbout', 'si', " failed to set about", $this->about, $this->userID);
+		return $this->dbc->runQuery('setAbout', 'si', $this->about, $this->userID);
 	}
 
 	private function setFirstName() : bool {
-		return $this->dbc->runQuery('setFirstName', 'si', " failed to set firstName", $this->firstName, $this->userID);
+		return $this->dbc->runQuery('setFirstName', 'si', $this->firstName, $this->userID);
 	}
 
 	private function setLastName() : bool {
-		return $this->dbc->runQuery('setLastName', 'si', " failed to set firstName", $this->lastName, $this->userID);
+		return $this->dbc->runQuery('setLastName', 'si', $this->lastName, $this->userID);
 	}
 
 	//adds 1 to number of logins
 	private function updateLogins(int $userID) : bool {
-		return $this->dbc->runQuery('updateLogins', 'i', " failed to update logins", $userID);
+		return $this->dbc->runQuery('updateLogins', 'i', $userID);
 	}
-
 
 	//$date must be in mysql datetime default format
 	private function setLastLoginDate(string $date) : bool {
-		return $this->dbc->runQuery('setLastLoginDate', 'si', " failed to update last_login_date", $date, $this->userID);
+		return $this->dbc->runQuery('setLastLoginDate', 'si', $date, $this->userID);
 	}
 
 	private function setUserCreationDate() : bool {
-		return $this->dbc->runQuery('setUserCreationDate', 'i', " failed to update user_creation_date", $this->userID);
+		return $this->dbc->runQuery('setUserCreationDate', 'i', $this->userID);
 	}
 }
  ?>

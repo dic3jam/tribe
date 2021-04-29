@@ -1,4 +1,5 @@
-<?php 
+<?php declare(strict_types=1);
+session_start();
 include '../class/class-login.php';
 $error = array();
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -7,15 +8,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$user = new login((string)$_POST['username'], (string)$_POST['password']);
 			$user->advance();
 		} catch (Exception $e) {
-			$error[] = $e->getMessage();
-			if(isset($_COOKIE['value']))
-				$user->createLoginToken($this->username, $this->userID, -3600);
-				$_POST['username'] = '';
-				$_POST['password'] = '';
-				//header("Location: login.php");
+				$error[] = $e->getMessage();
+				if(isset($_COOKIE['value']))
+					$user->createLoginToken($this->userID);
+					$_POST['username'] = '';
+					$_POST['password'] = '';
+					//header("Location: login.php");
 		}
-	}else
+	}else {
 		$error[] = "<p>Bad login attempt</p>";
+		$_POST['username'] = '';
+		$_POST['password'] = '';
+	}
 }
 ?>
 <!DOCTYPE html>

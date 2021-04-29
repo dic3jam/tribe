@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 include '../class/class-register.php';
 $error = array();
-$varSet = true;
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $varSet = true;
     foreach($_POST as $key=>$value) {
         if($value == '') {
             $varSet = false;
@@ -19,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             echo $reg->toString();
             $reg->advance();
         } catch (Exception $e) {
-			$errors[] = $e->getMessage();
+			$error[] = $e->getMessage();
             foreach($_POST as $post)
                 $post = '';
         }

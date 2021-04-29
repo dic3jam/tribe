@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 require '../trait/trait-queries.php';
 require 'Exceptions.php';
 /* class-dbc
@@ -73,7 +72,7 @@ class dbc extends mysqli {
 	 * else an associative array of the results
 	 * @throws queryFailedException if the query fails
 	 */
-	public function runQuery(string $q, string $boundValueTypes, ...$params) {
+	public function runQuery(string $q, string $boundValueTypes, ...$params) /*: bool | array | string | int*/ { 
 		$stmt = $this->prepare($this->queries_array[$q]);
 		if(!$stmt)
 			throw new queryFailedException("Query " . $q . " has improper syntax");
@@ -83,12 +82,12 @@ class dbc extends mysqli {
 		$initial_result = $stmt->get_result();
 		if($initial_result == false)
 			return true;
-		$result = $initial_result->fetch_array();
+		$result = $initial_result->fetch_all();
 		if($result == NULL) 
 			throw new queryFailedException("Query " . $q . " failed to execute");
-		if(count($result) == 2){ 
-				return $result[0];
-		} else
+		if(count($result[0]) == 1)
+			return $result[0][0];
+		else
 			return $result;
 	}
 

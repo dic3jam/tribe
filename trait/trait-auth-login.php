@@ -10,10 +10,9 @@ trait authLogin {
 	 * @return boolean indicating success
 	 */
 	public function check_login() : bool {
-		if($_COOKIE['value']) {
+		if(isset($_SESSION['user'])) {
 			return true;
 		} else
-			//TODO redirect to login AND display error message that not logged in	
 			throw new notLoggedInException();
 			return false;
 	}

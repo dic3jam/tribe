@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* trait fileUpload
  * handles uploaading files
  * to the server
@@ -32,7 +32,7 @@ trait fileUpload {
    */
   private function checkFileSize() : bool {
     if ($_FILES["fileToUpload"]["size"] > 10000000) {
-      throw new invalidPictureException("File is too large (10MB limit");
+      throw new invalidPictureException("File is too large (10MB limit)");
       return false;
     }
     if ($_FILES["fileToUpload"]["size"] <= 0) {
