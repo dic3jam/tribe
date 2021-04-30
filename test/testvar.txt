@@ -1,0 +1,24 @@
+
+$_SERVER['REQUEST_METHOD'] = 'POST'
+
+$_POST['username'] = "hopey"
+
+$_POST['password'] = "joey2011"
+
+$_POST['firstName'] = "admin"
+
+$_POST['lastName'] = "admin"
+
+$_POST['about'] = "the admin"
+
+$_FILES['fileToUpload']['tmp_name'] = "test/test_pic.png"
+
+$_FILES["fileToUpload"]["size"] = 30000
+
+$_FILES['fileToUpload']['type'] = "image/png"
+
+$_FILES["fileToUpload"]["name"] = "test_pic.png"
+
+$_FILES['fileToUpload']['error'] = 0
+
+$_SESSION['user'] = 7
