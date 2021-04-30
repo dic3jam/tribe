@@ -35,8 +35,7 @@ class register {
 		$this->dbc = new dbc();
 		password::validPassword((string)$_POST['password']);
 		username::validUsername((string)$_POST['username']);
-		//$pro_pic_loc = fileUpload::storeProPic();
-		$pro_pic_loc = "uploads/test";
+		$pro_pic_loc = fileUpload::storeProPic();
 		$this->username = (string)$_POST['username'];
 		$this->dbc->runQuery('createNewUser', 'ssssss', $this->username, ((string)$_POST['password']), ((string)$_POST['firstName']), ((string)$_POST['lastName']), $pro_pic_loc, ((string)$_POST['about']));
 		messageBoard::createMessageBoardID($this->dbc, ID::getUserID($this->username, $this->dbc));

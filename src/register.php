@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php 
 include '../class/class-register.php';
 $error = array();
 if($_SERVER['REQUEST_METHOD'] == 'POST'){

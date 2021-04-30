@@ -1,17 +1,25 @@
 <?php
 session_start();
-//$_SESSION['user'] = 1;
 include '../class/class-user.php';
 $error = array();
 try {
     $user = new user();
 } catch (Exception $e) {
-    $errors[] = "User invalid";
-    if(!isset($_SESSION['user']))
-    session_unset();
-    session_destroy();
+    $error[] = $e->getMessage();
+    if(!empty($_SESSION['user'])){
+        session_unset();
+        session_destroy();
+    }
     header("Location: login.php");
     exit();
+}
+//logout button
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    if(isset($_POST['Logout'])){
+        session_unset();
+        session_destroy();
+        header("Location: login.php");
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -20,12 +28,16 @@ try {
         <title>TRIBE</title>
     </head>
     <body>
+        <?php include 'errors.php';?>
 		<?php include '../include/header.php';?>
 
         <?php echo "<h1 class='name'>" . $user->firstName . " " . $user->lastName . "</h1>";?>
 
-        //TODO logout button
-        //TODO link to edit info
+        <form method="post" action="">
+            <input type="submit" name="Logout" value="Logout">
+        </form>
+
+        <a id="edit" href="edit-user.php">Edit Info</a>
 
         <?php echo "<img class='propic' src=$user->pro_pic_loc alt='Unable to load image' width='300' height='400'>";?>
 
@@ -44,7 +56,6 @@ try {
         echo "<p>Coming Soon!</p></div>";
         ?>
 
-        <?php include 'errors.php';?>
         <?php include '../include/footer.php';?>
     </body>
 </html>

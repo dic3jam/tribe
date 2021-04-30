@@ -83,8 +83,8 @@ class dbc extends mysqli {
 		if($initial_result == false)
 			return true;
 		$result = $initial_result->fetch_all();
-		if($result == NULL) 
-			throw new queryFailedException("Query " . $q . " failed to execute");
+		//if($result == NULL) 
+			//throw new queryFailedException("Query " . $q . " failed to execute");
 		if(count($result[0]) == 1)
 			return $result[0][0];
 		else

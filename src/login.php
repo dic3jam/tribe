@@ -9,11 +9,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$user->advance();
 		} catch (Exception $e) {
 				$error[] = $e->getMessage();
-				if(isset($_COOKIE['value']))
-					$user->createLoginToken($this->userID);
+				if(isset($_SESSION['user']))
+					session_unset();
+					session_destroy();
+					header("Location: login.php");
 					$_POST['username'] = '';
 					$_POST['password'] = '';
-					//header("Location: login.php");
 		}
 	}else {
 		$error[] = "<p>Bad login attempt</p>";

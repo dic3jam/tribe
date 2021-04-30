@@ -1,7 +1,7 @@
 <?php
 trait query {
 static $queries = array (
-	//getters
+	//user getters
 	"getUserID" => "SELECT userID FROM users WHERE username = ?", //s
 	"getProPic" => "SELECT pro_pic_loc FROM users WHERE userID = ?", //ret string, int 
 	"getAbout" => "SELECT about FROM users WHERE userID = ?", //ret string, int
@@ -16,7 +16,7 @@ static $queries = array (
 	"getUserCreationDate" => "SELECT user_creation_date FROM users WHERE userID = ?", //ret string, int
 	"getMessageBoardID" => "SELECT messageBoardID from messageboard WHERE userID = ?", //ret s, i
 	
-	//setters
+	//user setters
 	"createNewUser" => "INSERT INTO users (username, password, password_creation_date, user_creation_date, firstname, lastname, pro_pic_loc, about, logins, last_login_date) VALUES (?, SHA1(?), NOW(), NOW(), ?, ?, ?, ?, 1, NOW())", //username, password, firstname, lastname, pro_pic_loc, about, ssssss 
 	"modTribeMembership" => "UPDATE tribeMembership SET userID = ?, tribeID = ? councilMember = ?", //int int boolean
 	"addTribeMembership" => "INSERT into tribeMembership (userID, tribeID, councilMember) VALUES (?,?,?)",
@@ -34,11 +34,20 @@ static $queries = array (
 	"setLastLoginDate" => "UPDATE users SET last_login_date = NOW() WHERE userID=(?)", //int
 	"setUserCreationDate" => "UPDATE users SET user_creation_date = NOW() WHERE userID=(?)", //int
 
-	//getters
+	//tribe getters
 	"getTribeName" => "SELECT tribename FROM tribe WHERE tribeID = ?",
 	"getTribeID" => "SELECT tribeID from tribe WHERE tribename = ?",
-	//setters
-	"removeTribeMembership" => "DELETE FROM tribeMembership WHERE userID = ?",
+	"getTribeMessageBoardID" => "SELECT messageBoardID from messageboard WHERE tribeID = ?", //ret s, i
+	"checkCouncilMember" => "SELECT councilMember FROM tribeMembership WHERE tribeID = ? AND userID = ?", //ret b, ii
+	"getTribePic" => "SELECT tribe_pic_loc FROM tribe WHERE tribeID = ?", //ret s, i
+	"getTribeMembers" => "SELECT users.username, users.userID from users INNER JOIN tribe ON users.userID=tribe.userID WHERE tribeID = ?", //ret array i, i
+	
+	//tribe setters
+	"removeTribeMembership" => "DELETE FROM tribeMembership WHERE userID = ? AND tribeID = ?", //ret b, ii
+	"addTribeMembership" => "INSERT INTO tribeMembership (userID, tribeID, councilMember) VALUES (?, ?, ?)", //ret b, iib
+	"addCouncilMember" => "UPDATE tribeMembership SET councilMember = 1 WHERE tribeID=? AND userID=?", //ret b, ii
+	"setTribePic" => "UPDATE tribe SET tribe_pic_loc = ? WHERE tribeID = ?", //ret b, si
+	"setTribeName" => "UPDATE tribe SET tribename = ? WHERE tribeID = ?" //ret b, si
 );
 }
 ?>

@@ -49,4 +49,10 @@ class invalidPictureException extends Exception {
 		}
 }
 
+class invalidMemberException extends InvalidArgumentException {
+	public function __construct($message = "Not a member of this tribe", $code = 0, Throwable $previous = null) {
+
+			parent::__construct($message, $code, $previous);
+		}
+}
 ?>

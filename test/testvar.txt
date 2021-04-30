@@ -1,9 +1,9 @@
 
 $_SERVER['REQUEST_METHOD'] = 'POST'
 
-$_POST['username'] = "admin"
+$_POST['username'] = "hopey"
 
-$_POST['password'] = "password"
+$_POST['password'] = "joey2011"
 
 $_POST['firstName'] = "admin"
 
@@ -20,3 +20,5 @@ $_FILES['fileToUpload']['type'] = "image/png"
 $_FILES["fileToUpload"]["name"] = "test_pic.png"
 
 $_FILES['fileToUpload']['error'] = 0
+
+$_SESSION['user'] = 7

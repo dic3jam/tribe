@@ -31,7 +31,7 @@ trait password {
 	 * @return bool indicating success
 	 */
 	public function validPassword(string $password) : bool {
-		if(strlen($password) < 20)
+		if(strlen($password) < 40)
 			return true;
 		else{
 			throw new passwordLengthException("Password is too long");
@@ -50,6 +50,13 @@ trait password {
 	public function changePassword(string $username, string $password, string $newPassword, object $dbc) : bool{
 			$userID = ID::getUserID($username, $dbc);
 			self::checkPassword($userID, $password, $dbc);
+			self::setPasswordCreateDate($userID, $dbc);
+			return self::setPassword($newPassword, $userID, $dbc);
+	}
+
+	//for use at the edit-user screen (forgoes getting userID, ensuring existing password is valid)
+	public function changePasswordEditUser(string $username, string $newPassword, int $userID, object $dbc) : bool{
+			self::validPassword($newPassword);
 			self::setPasswordCreateDate($userID, $dbc);
 			return self::setPassword($newPassword, $userID, $dbc);
 	}

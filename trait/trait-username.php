@@ -23,16 +23,6 @@ trait username {
 		return true;	
 	}
 
-	/* function changeUsername
-	 * Changes a username to the new string
-	 * @param int userID 
-	 * @param string newUsername - the new userName
-	 * @return bool indicating success or failure
-	 */
-	public function changeUsername(int $userID, string $newUsername, object $dbc) : bool {
-		return self::setUsername($newUsername, $userID, $dbc);	
-	}
-
 	/* function validUsername
 	 * validates if username is appropriate
 	 * @param string username - the username to check
@@ -48,8 +38,8 @@ trait username {
 		return $dbc->runQuery('getUsername','i', $userID);
 	}
 
-	public function setUsername(string $newUsername, int $userID, object $dbc) : string {
-		return $dbc->runQuery('setUsername','i', $newUsername, $userID);
+	public function setUsername(string $newUsername, int $userID, object $dbc) : bool {
+		return $dbc->runQuery('setUsername','si', $newUsername, $userID);
 	}
 
 

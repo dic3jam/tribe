@@ -10,7 +10,7 @@ trait authLogin {
 	 * @return boolean indicating success
 	 */
 	public function check_login() : bool {
-		if(isset($_SESSION['user'])) {
+		if(!empty($_SESSION['user'])) {
 			return true;
 		} else
 			throw new notLoggedInException();

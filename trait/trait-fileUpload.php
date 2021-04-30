@@ -5,7 +5,10 @@
  */
 trait fileUpload {
 
+  //TODO update when pushh to server
   private static string $dir = "../uploads/";
+  //testing
+  //private static string $dir = "../uploads/";
 
   /* function checkIfFileExists
    * Check uploads/ to see if the file
@@ -55,6 +58,16 @@ trait fileUpload {
       }
       throw new invalidPictureException("Picture must be jpg, gif, png, jpeg format");
       return false;
+  }
+
+  /* function delProPic
+   * deletes the picture at the provided path
+   * TODO big security vulnerability, need to lock down
+   * @param string pro_pic_loc the profile pic location
+   * @return bool indicating success
+   */
+  public function delProPic(string $pro_pic_loc) : bool {
+    return unlink($pro_pic_loc);
   }
   
   /* function storeProPic

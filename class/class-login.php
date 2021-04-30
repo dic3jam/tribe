@@ -35,6 +35,7 @@ class login {
 		$this->username = $username;
 		$this->password = $password;
 		$this->isValidUser = true;
+		$this->updateLogins();
 		$this->isSetLogin = $this->createLoginToken($this->userID);
 		$this->repOk();
 	}
@@ -77,6 +78,9 @@ class login {
 		$_SESSION['user'] = $userID;
 		return true;
 	}
-
+//adds 1 to number of logins
+	private function updateLogins() : bool {
+		return $this->dbc->runQuery('updateLogins', 'i', $this->userID);
+	}
 }
 ?>

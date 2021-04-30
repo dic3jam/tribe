@@ -20,10 +20,10 @@ class user {
 	use messageBoard;
 
 	//admin
-	private object $dbc;
+	public object $dbc;
 	//User properties
-	private int $userID;
-	private string $username;
+	public int $userID;
+	public string $username;
 	private string $password;
 	public string $firstName;
 	public string $lastName;
@@ -52,7 +52,6 @@ class user {
 		$this->user_creation_date = $this->getUserCreationDate();
 		$this->pro_pic_loc = $this->getProPic();
 		$this->about = $this->getAbout();
-		$this->updateLogins($this->userID);	
 		$this->logins = $this->getLogins();
 		$this->messageBoardID = messageBoard::getMessageBoardID($this->dbc, $this->userID);
 		$this->last_login_date = $this->getLastLoginDate();
@@ -65,7 +64,7 @@ class user {
 	private function repOk() : void {
 		assert($this->dbc->connect_errno == 0);
 		assert(strlen($this->username) < 20); 
-		assert(strlen($this->password) < 20);
+		assert(strlen($this->password) < 40);
 		assert(strlen($this->firstName) < 20);
 		assert(strlen($this->lastName) < 40);
 		assert($this->password_creation_date != NULL);
@@ -84,7 +83,6 @@ class user {
 			", lastName: " . $this->lastName .
 			", password creation date: " . $this->password_creation_date .
 			", user since: " . $this->user_creation_date .
-			", profile pic: " . $this->pro_pic_loc .
 			", logins: " . (strval($this->logins)) .
 			", message board ID: " . (strval($this->messageBoardID)) .
 			", last login date: " . $this->last_login_date . 
@@ -132,39 +130,34 @@ class user {
 	
 	//for adding to tribe, adding/removing council member status	
 	//TODO see what the return array looks like for this
-	private function modTribeMembership(int $tribeID, bool $isCouncilMember) : boolean {
+	public function modTribeMembership(int $tribeID, bool $isCouncilMember) : boolean {
 		$result = $this->dbc->runQuery('modTribeMembership', 'iis', $this->userID, $tribeID, $isCouncilMember);	
 		$this->tribe_memberships = getAllTribalMemberships();
 		$this->repOk();
 	}
 
-	private function setProPic() : bool {
-		return $this->dbc->runQuery('setProPic', 'si', $this->pro_pic_loc, $this->userID);
+	public function setProPic(string $pro_pic_loc) : bool {
+		return $this->dbc->runQuery('setProPic', 'si', $pro_pic_loc, $this->userID);
 	}
 
-	private function setAbout() : bool {
-		return $this->dbc->runQuery('setAbout', 'si', $this->about, $this->userID);
+	public function setAbout(string $about) : bool {
+		return $this->dbc->runQuery('setAbout', 'si', $about, $this->userID);
 	}
 
-	private function setFirstName() : bool {
-		return $this->dbc->runQuery('setFirstName', 'si', $this->firstName, $this->userID);
+	public function setFirstName(string $firstName) : bool {
+		return $this->dbc->runQuery('setFirstName', 'si', $firstName, $this->userID);
 	}
 
-	private function setLastName() : bool {
-		return $this->dbc->runQuery('setLastName', 'si', $this->lastName, $this->userID);
-	}
-
-	//adds 1 to number of logins
-	private function updateLogins(int $userID) : bool {
-		return $this->dbc->runQuery('updateLogins', 'i', $userID);
+	public function setLastName(string $lastName) : bool {
+		return $this->dbc->runQuery('setLastName', 'si', $lastName, $this->userID);
 	}
 
 	//$date must be in mysql datetime default format
-	private function setLastLoginDate(string $date) : bool {
+	public function setLastLoginDate(string $date) : bool {
 		return $this->dbc->runQuery('setLastLoginDate', 'si', $date, $this->userID);
 	}
 
-	private function setUserCreationDate() : bool {
+	public function setUserCreationDate() : bool {
 		return $this->dbc->runQuery('setUserCreationDate', 'i', $this->userID);
 	}
 }
