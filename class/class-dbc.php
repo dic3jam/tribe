@@ -25,14 +25,11 @@ class dbc extends mysqli {
 	 */
 	public function __construct(){
 		
-		$DB_NAME = 'tribe';
-		$charset = 'utf8';
-		//$DB_USER = 'root';
-		//$DB_PASSWORD = 'hIqBb6IMqdtO';
-		//$DB_HOST = '127.0.0.1';
-		$DB_USER = 'dic3jam';
-		$DB_PASSWORD = 'password';
-		$DB_HOST = 'localhost';
+		$DB_NAME = '';
+		$charset = '';
+		$DB_USER = '';
+		$DB_PASSWORD = '';
+		$DB_HOST = '';
 		parent::__construct($DB_HOST, $DB_USER, $DB_PASSWORD, $DB_NAME);
 		$this->set_charset($charset);	
 		$this->queries_array = query::$queries;
