@@ -12,7 +12,7 @@ password_creation_date DATETIME NOT NULL,
 user_creation_date DATETIME NOT NULL,
 firstname VARCHAR(20) NOT NULL,
 lastname VARCHAR(20) NOT NULL,
-pro_pic_loc VARCHAR(20) NOT NULL,
+pro_pic_loc VARCHAR(60) NOT NULL,
 about NVARCHAR(100) NOT NULL,
 logins INT UNSIGNED NOT NULL,
 last_login_date DATETIME NOT NULL,
@@ -23,7 +23,7 @@ UNIQUE (pro_pic_loc)
 CREATE TABLE tribe (
 tribeID INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 tribename VARCHAR(40) NOT NULL,
-tribe_pic_loc VARCHAR(20) NOT NULL,
+tribe_pic_loc VARCHAR(60) NOT NULL,
 UNIQUE (tribename),
 UNIQUE (tribe_pic_loc)
 );

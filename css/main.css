@@ -1,0 +1,16 @@
+/* SCSS HEX */
+/*dark-slate-gray*/
+/*cambridge-blue*/
+/*dark-sienna*/
+/*burnished-brown*/
+/*pale-pink*/
+body {
+  background-color: #90baadff;
+}
+
+.grid {
+  display: -ms-grid;
+  display: grid;
+  grid-gap: 3px;
+}
+/*# sourceMappingURL=main.css.map */

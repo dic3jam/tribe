@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include '../class/class-tribe.php';
 try {
     $tribe = new tribe();
@@ -9,7 +10,7 @@ try {
         session_unset();
         session_destroy();
     }
-    header("Location: login.php");
+    header("Location: profile.php");
     exit();
 }
 $actions = array();
@@ -41,54 +42,65 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TRIBE</title>
-    </head>
-    <body>
-        <?php include 'errors.php';?>
-        <?php include '../include/header.php';?>
+<!---------HEADER---------------------->
+<?php include '../include/header.php';?>
+<!------------------------------------->
+    <nav id='tribe'>
+        <h1>TRIBE</h1>
+        <h1 class='title'><?php echo $tribe->tribeName?></h1>
+        <a class="navLink" href="profile.php"><?php echo $tribe->username?></a>
+        <?php include 'logout.php';?>
+    </nav>
+    </div> <!--header-->
 
-        <h1 class='tribeTitle'><?php echo $tribe->tribeName?></h1>
-
-        <a id="return" href="profile.php">Return to Profile</a>
-
-        <?php echo "<img class='tribepic' src=$tribe->tribe_pic_loc alt='Unable to load image' width='300' height='400'>";?>
-
-        <?php echo "<div class='memberList'>" . "<h3 class='MemberListTitle'>" . "Tribal Members" . "</h3>";
-                for($i = 0; $i < count($tribe->tribeMembers) ; $i++){
-                    $username = $tribe->tribeMembers[$i][0];    
-                    $userID = $tribe->tribeMembers[$i][1];    
-                    echo "<p class='username'><a href='profile.php?userID=" . $userID . "'>"  . $username . "</a></p>";       
-                }
-        ?>
-
-        <?php echo "<div class='messageboard'>" . "<h3 class='messageboardTitle'>" . $tribe->tribeName ." Board" . "</h3>";
-        echo "<p>Coming Soon!</p></div>";
-        ?>
-
-        <?php if($tribe->isCouncilMember) {
-            echo "<div class='councilDiv'>";
-            echo "<h2 class='councilForm'>" . "Council Member Table" . "</h2>";
-            echo "<form class='councilForm' method='post' action='' enctype='multipart/form-data>" .
-            "Invite Members: <input type='text' name='invite'>" . 
-            "Remove Member: <input type='text' name='remove'>" . 
-            "Add Council Member: <input type='text' name='council'>" . 
-            "Edit Picture: <input type='file' name='fileToUpload' id='fileToUpload'>" . 
-            "<input type='submit' name='submit'>";
-            echo "</div>";
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                if(isset($actions) && !empty($actions)){
-                    foreach($actions as $a){
-                            echo "<p class='actions'>" . $a . "</p>";
-                    }	
-                }
+    <div class='lsidebar'>
+    <?php echo "<div class='list'>" . "<h3 class='listTitle'>" . "Tribal Members" . "</h3>";
+            echo "<h4>Viewing Others Profiles Coming Soon!</h4>";
+            for($i = 0; $i < count($tribe->tribeMembers) ; $i++){
+                $username = $tribe->tribeMembers[$i][0];    
+                $userID = $tribe->tribeMembers[$i][1];    
+                echo "<p class='listedLinks'><a href='profile.php?userID=" . $userID . "'>"  . $username . "</a></p>";       
             }
-            include 'errors.php';
-        }
-        ?>
+        echo "</div>";
+    ?>
+    </div><!--lsidebar-->
 
-        <?php include '../include/footer.php';?>
-        </body>
-</html>
+    <?php 
+    if($tribe->isCouncilMember) {
+        echo "<div class='main' id='council'>";
+    }else {
+        echo "<div class='main'>"; 
+    }
+    ?>
+    <?php echo "<img class='pic' src=$tribe->tribe_pic_loc alt='Unable to load image' width='300' height='400'>";?>
+    <?php echo "<div class='messageboard'>" . "<h3 class='messageboardTitle'>" . $tribe->tribeName ." Board" . "</h3>";
+    echo "<p>Coming Soon!</p></div>";
+    ?>
+    <?php if($tribe->isCouncilMember) {
+        echo "<div id='councilForm'>";
+        echo "<h3 class='listTitle'>" . "Council Member Table" . "</h3>";
+        echo "<form method='post' action='' enctype='multipart/form-data'>" .
+        "Invite Members: <input type='text' name='invite'>" . 
+        "Remove Member: <input type='text' name='remove'>" . 
+        "Add Council Member: <input type='text' name='council'>" . 
+        "Edit Picture: <input type='file' name='fileToUpload' id='fileToUpload'>" . 
+        "<input type='submit' name='submit'>" .
+        "</form>";
+        echo "</div>";
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            if(isset($actions) && !empty($actions)){
+                foreach($actions as $a){
+                        echo "<p class='actions'>" . $a . "</p>";
+                }	
+            }
+        }
+        include 'errors.php';
+    }
+    ?>
+    </div><!--main-->
+
+    <div class="footer">
+<!---------Footer---------------------->
+<?php include '../include/footer.php';?>
+<!------------------------------------->
+        

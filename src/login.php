@@ -23,16 +23,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	}
 }
 ?>
-<!DOCTYPE html>
-<html>
-	<head>
-			<title>TRIBE</title>
-	</head>
-  <body>
-		<?php include '../include/header.php';?>
+<!---------HEADER---------------------->
+<?php include '../include/header.php';?>
+<!------------------------------------->
 		<h1>TRIBE</h1>
 		<h2>Building Communities of Trust and Respect</h2>
 		<h3>Login Here</h3>
+    </div> <!--header-->
+
+    <div class='main'>
 		<form method="post" action=""> 
 			Username: <input type="text" name="username">
 			Password: <input type="text" name="password">
@@ -41,8 +40,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		<?php include 'errors.php';?>
         <a href="register.php">New? JOIN THE TRIBE</a>
         <a href="change-password.php">Change Password</a>
-    <?php include '../include/footer.php';?>
-    </body>
-</html>
-
+    </div><!--main-->
+   
+    <div class="footer">
+<!---------Footer---------------------->
+<?php include '../include/footer.php';?>
+<!------------------------------------->
+ 
 

@@ -1,0 +1,89 @@
+/* SCSS HEX */
+$primary: #35605aff; /*dark-slate-gray*/
+$secondary: #90baadff; /*cambridge-blue*/
+$accent: #4c212aff; /*dark-sienna*/
+$tertiary1: #a78682ff; /*burnished-brown*/
+$tertiary2: #efd3d7ff; /*pale-pink*/
+
+body {
+  background-color: $secondary;
+}
+
+.grid {
+  display: grid;
+  grid-gap: 3px;
+  grid-template-columns: ;
+
+
+  .header {
+
+    #profile {
+
+    }
+
+    #tribe {
+
+    }
+
+    #editUser {
+
+    }
+
+    #createTribe {
+
+    }
+
+  }
+
+  .lsidebar {
+
+    .list {
+
+    }
+
+    .listTitle {
+
+    }
+
+    .listedLinks {
+
+    }
+
+  }
+
+  .main {
+
+    #council {
+
+      form {
+
+      }
+
+    }
+
+    .pic {
+
+    }
+
+    .about {
+
+    }
+
+    .aboutText {
+
+    }
+
+    .messageboard {
+
+    }
+
+    .messageboardTitle {
+
+    }
+
+  }
+
+  .footer {
+
+  }
+}
