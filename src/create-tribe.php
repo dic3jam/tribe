@@ -39,7 +39,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     </nav>
     </div> <!--header-->
 
-    <div class="main"></div>
+    <div class="formMain">
     <h2>Create New Tribe!</h2>
     <form method="post" action="" enctype="multipart/form-data">
         TribeName: <input type="text" name="newTribeName">

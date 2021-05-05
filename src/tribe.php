@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 include '../class/class-tribe.php';
 try {
     $tribe = new tribe();
@@ -41,43 +42,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error[] = $e->getMessage();
     }
 }
-?>
-<!---------HEADER---------------------->
-<?php include '../include/header.php';?>
-<!------------------------------------->
-    <nav id='tribe'>
-        <h1>TRIBE</h1>
-        <h1 class='title'><?php echo $tribe->tribeName?></h1>
-        <a class="navLink" href="profile.php"><?php echo $tribe->username?></a>
-        <?php include 'logout.php';?>
-    </nav>
-    </div> <!--header-->
+function echoCouncilTable($isCouncil, $tribe) {
+    if($isCouncil)
+        $id = "council";
+    else
+        $id = "noCouncil";
 
-    <div class='lsidebar'>
-    <?php echo "<div class='list'>" . "<h3 class='listTitle'>" . "Tribal Members" . "</h3>";
-            echo "<h4>Viewing Others Profiles Coming Soon!</h4>";
-            for($i = 0; $i < count($tribe->tribeMembers) ; $i++){
-                $username = $tribe->tribeMembers[$i][0];    
-                $userID = $tribe->tribeMembers[$i][1];    
-                echo "<p class='listedLinks'><a href='profile.php?userID=" . $userID . "'>"  . $username . "</a></p>";       
-            }
-        echo "</div>";
-    ?>
-    </div><!--lsidebar-->
+    echo "<div class='messageboard'" . $id . ">" . "<h3>" . $tribe->tribeName ." Board" . "</h3>";
 
-    <?php 
-    if($tribe->isCouncilMember) {
-        echo "<div class='main' id='council'>";
-    }else {
-        echo "<div class='main'>"; 
-    }
-    ?>
-    <?php echo "<img class='pic' src=$tribe->tribe_pic_loc alt='Unable to load image' width='300' height='400'>";?>
-    <?php echo "<div class='messageboard'>" . "<h3 class='messageboardTitle'>" . $tribe->tribeName ." Board" . "</h3>";
     echo "<p>Coming Soon!</p></div>";
-    ?>
-    <?php if($tribe->isCouncilMember) {
-        echo "<div id='councilForm'>";
+
+    if($tribe->isCouncilMember) {
+        echo "<div class='councilForm'>";
         echo "<h3 class='listTitle'>" . "Council Member Table" . "</h3>";
         echo "<form method='post' action='' enctype='multipart/form-data'>" .
         "Invite Members: <input type='text' name='invite'>" . 
@@ -86,7 +62,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         "Edit Picture: <input type='file' name='fileToUpload' id='fileToUpload'>" . 
         "<input type='submit' name='submit'>" .
         "</form>";
-        echo "</div>";
+        echo "</div>"; //councilForm
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             if(isset($actions) && !empty($actions)){
                 foreach($actions as $a){
@@ -96,10 +72,51 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         include 'errors.php';
     }
+   
+}
+?>
+
+<!---------HEADER---------------------->
+<?php include '../include/header.php';?>
+<!------------------------------------->
+    <nav id='tribe'>
+        <h1>TRIBE</h1>
+        <h2 class='title'><?php echo $tribe->tribeName?></h2>
+        <a class="navLink" href="profile.php"><?php echo $tribe->username?></a>
+        <?php include 'logout.php';?>
+    </nav>
+    </div> <!--header-->
+
+    <div class='lsidebar'>
+    <?php echo "<div class='list'>" . "<h3 class='listTitle'>" . "Tribal Members" . "</h3>";
+            echo "<h4>Viewing Others Profiles Coming Soon!</h4>";
+            echo "<ul>";
+            for($i = 0; $i < count($tribe->tribeMembers) ; $i++){
+                $username = $tribe->tribeMembers[$i][0];    
+                $userID = $tribe->tribeMembers[$i][1];    
+                echo "<li><a href='profile.php?userID=" . $userID . "'>"  . $username . "</a></li>";       
+            }
+        echo "</ul></div>";
     ?>
+    </div><!--lsidebar-->
+
+    <div class='main'>
+        <div class='leftMain'>
+                <?php echo "<img src=$tribe->tribe_pic_loc alt='Unable to load image'>";?>
+            </div><!--leftMain-->
+
+        <div class='rightMain'>
+        <?php 
+        if($tribe->isCouncilMember) {
+            echoCouncilTable(true, $tribe);
+        }else {
+            echoCouncilTable(false, $tribe);
+        }
+        ?>
+        </div><!--rightMain-->
     </div><!--main-->
 
-    <div class="footer">
+<div class="footer">
 <!---------Footer---------------------->
 <?php include '../include/footer.php';?>
 <!------------------------------------->

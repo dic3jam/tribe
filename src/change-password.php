@@ -30,11 +30,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <!---------HEADER---------------------->
 <?php include '../include/header.php';?>
 <!------------------------------------->
-    <h1>TRIBE</h1>
-    <h2>Change Password</h2>
+        <nav>
+            <h1>TRIBE</h1>
+            <h2>Change Password</h2>
+        </nav>
     </div> <!--header-->
 
-    <div class='main'>
+    <div class='formMain'>
     <form method="post" action="">
         Username: <input type="text" name="username">
         Password: <input type="text" name="password">

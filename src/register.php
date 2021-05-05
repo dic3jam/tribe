@@ -29,18 +29,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <!---------HEADER---------------------->
 <?php include '../include/header.php';?>
 <!------------------------------------->
-    <h1>TRIBE</h1>
-    <h2>Register Here!</h2>
+        <nav>
+            <h1>TRIBE</h1>
+            <h2>Register Here!</h2>
+            <a href="login.php">Return to Login</a>
+        </nav>
     </div> <!--header-->
 
-    <div class='main'>
-    <form method="post" action="" enctype="multipart/form-data">
+    <div class='formMain'>
+    <form method="post" action="" enctype="multipart/form-data" id="reg">
         Username: <input type="text" name="username">
         Password: <input type="text" name="password">
         First Name: <input type="text" name="firstName">
         Last Name: <input type="text" name="lastName">
         Upload Profile Pic <input type="file" name="fileToUpload" id="fileToUpload">
-        About: <input type="text" name="about">
+        About: <textarea form="reg" maxlength="100" rows="5" cols="30" name="about">In 100 words or less</textarea>
         <input type="submit" name="Login">
     </form>
     <?php include 'errors.php';?>

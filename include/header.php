@@ -6,6 +6,7 @@
         <meta name="author" content="Jim DiCesare">
         <link rel="stylesheet" href="../css/main.css">
         <title>TRIBE</title>
+        <link rel="shortcut icon" type="image/ico" href="../images/boilerplatefavicon.ico">
     </head>
     <body>
     <div class='grid'>

@@ -28,10 +28,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <!------------------------------------->
 		<h1>TRIBE</h1>
 		<h2>Building Communities of Trust and Respect</h2>
-		<h3>Login Here</h3>
     </div> <!--header-->
 
-    <div class='main'>
+    <div class='formMain'>
+		<h3>Login Here</h3>
 		<form method="post" action=""> 
 			Username: <input type="text" name="username">
 			Password: <input type="text" name="password">
