@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 include '../class/class-tribe.php';
 try {
     $tribe = new tribe();

@@ -73,5 +73,5 @@ ADD FOREIGN KEY (userID) references users(userID)
 
 #create test user
 
-INSERT INTO users (username, password, password_creation_date, user_creation_date, firstname, lastname, pro_pic_loc, about, logins, last_login_date) VALUES ('jimbo', SHA1('dont.panic'), NOW(), NOW(), 'jim', 'd', 'here',  "Long walks on the beach", 1, NOW());
+INSERT INTO users (username, password, password_creation_date, user_creation_date, firstname, lastname, pro_pic_loc, about, logins, last_login_date) VALUES ('jimbo', SHA1('password'), NOW(), NOW(), 'jim', 'd', 'here',  "Long walks on the beach", 1, NOW());
 

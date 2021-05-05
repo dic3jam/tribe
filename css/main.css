@@ -27,6 +27,27 @@ body {
   /*-------------------Footer------------------------*/
 }
 
+@media all and (max-width: 600px) {
+  .grid .header {
+    grid-column: 1 / -1;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 1;
+    grid-row: 1 / 2;
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+    background-color: #ccd5aeff;
+    -ms-grid-rows: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+  }
+  .grid nav h1 {
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 1;
+    grid-row: 2 / 3;
+  }
+}
+
 .grid .header {
   grid-column: 1 / -1;
   -ms-grid-row: 1;
@@ -159,6 +180,35 @@ body {
   grid-row: 2 / 5;
 }
 
+.grid .formMain form input {
+  display: block;
+}
+
+.grid .formMain form textarea {
+  display: block;
+}
+
+.grid .formMain a {
+  margin-left: 100px;
+  color: #b63535;
+  display: block;
+  margin: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.grid .formMain a:hover {
+  color: #d4a373ff;
+}
+
+.grid .rubric {
+  background-color: #fefae0ff;
+  grid-column: 1 / -1;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 3;
+  grid-row: 2 / 5;
+}
+
 .grid .main {
   background-color: #fefae0ff;
   grid-column: 2 / -1;
@@ -210,20 +260,26 @@ body {
 }
 
 .grid .main .rightMain .councilForm {
+  display: block;
   -ms-grid-column: 2;
   -ms-grid-column-span: 1;
   grid-column: 2 / 3;
   grid-row: 1 / -1;
 }
 
-.grid .main .rightMain .messageboard #council {
+.grid .main .rightMain .councilForm form input {
+  display: block;
+  margin: 3px;
+}
+
+.grid .main .rightMain #council.messageboard {
   -ms-grid-column: 1;
   -ms-grid-column-span: 1;
   grid-column: 1 / 2;
   grid-row: 1 / -1;
 }
 
-.grid .main .rightMain .messageboard #noCouncil {
+.grid .main .rightMain #noCouncil.messageboard {
   grid-column: auto;
   grid-column: auto;
 }

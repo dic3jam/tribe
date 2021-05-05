@@ -33,6 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         <nav>
             <h1>TRIBE</h1>
             <h2>Change Password</h2>
+            <a href="login.php">Login</a>
         </nav>
     </div> <!--header-->
 

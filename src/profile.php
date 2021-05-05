@@ -1,8 +1,5 @@
 <?php
 session_start();
-
-//$_SESSION['user'] = 1;
-
 include '../class/class-user.php';
 $error = array();
 try {

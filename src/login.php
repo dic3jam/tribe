@@ -30,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		<h2>Building Communities of Trust and Respect</h2>
     </div> <!--header-->
 
-    <div class='formMain'>
+    <div class='formMain' id='login'>
 		<h3>Login Here</h3>
 		<form method="post" action=""> 
 			Username: <input type="text" name="username">
@@ -38,8 +38,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			<input type="submit" name="Login">
 		</form>
 		<?php include 'errors.php';?>
-        <a href="register.php">New? JOIN THE TRIBE</a>
-        <a href="change-password.php">Change Password</a>
+		<a href="register.php">New? JOIN THE TRIBE</a>
+		<a href="change-password.php">Change Password</a>
+		<a href="beatRubric.php">CCV1152 Beat the Rubric Here!</a>
     </div><!--main-->
    
     <div class="footer">

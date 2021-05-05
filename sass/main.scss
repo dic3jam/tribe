@@ -16,10 +16,9 @@ body {
   min-height: 100%;
   background-color: $secondary;
   font-family: $fontPrimary, $fontSecondary;
-}
-@media screen {
   
 }
+
 .grid {
   display: grid;
   grid-gap: 3px;
@@ -27,6 +26,19 @@ body {
   grid-template-rows: repeat($fractionUnits, 1fr);
   height: 100%;
 /*-------------------HEADER------------------------*/
+  @media all and (max-width: 600px){
+      .header {
+        grid-column: 1 / -1;
+        grid-row: 1 / 2;
+        display: grid;
+        grid-template-columns: 1fr;
+        background-color: $accent;
+        grid-template-rows: 1fr 1fr;
+      }
+      nav h1 {
+        grid-row: 2 / 3;
+      }
+  }
   .header {
     grid-column: 1 / -1;
     grid-row: 1 / 2;
@@ -117,9 +129,35 @@ body {
       text-decoration: none;
     }
   }
+  
 /*----------------Left Side Bar--------------------*/
 /*-------------------Main--------------------------*/
   .formMain {
+    background-color: $primary;
+    grid-column: 1 / -1;
+    grid-row: 2 / 5;
+    form {
+      input {
+        display:block;
+      }
+      textarea {
+        display: block;
+      }
+    }
+    a {
+      margin-left:100px;
+      color: rgb(182, 53, 53);
+      display: block;
+      margin: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      color: $tertiary2;
+    }
+  }
+
+  .rubric {
     background-color: $primary;
     grid-column: 1 / -1;
     grid-row: 2 / 5;
@@ -152,34 +190,36 @@ body {
         }
       }
     }
-      .rightMain {
-        display:grid;
-        grid-template-columns: 2fr 1fr;
-        grid-template-rows: 1fr;
-        .councilForm {
-          grid-column: 2 / 3;
-          grid-row: 1 / -1;
-          form {
-
-          }
-          h3 {
-
-          }
+    .rightMain {
+      display:grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr;
+      .councilForm {
+        display:block;
+        grid-column: 2 / 3;
+        grid-row: 1 / -1;
+        form {
+          input {
+            display:block;
+            margin: 3px;
         }
-        //.councilForm #noCouncil {}
-        .messageboard #council {
-          grid-column: 1 / 2;
-          grid-row: 1 / -1;
-        
-        }
-        .messageboard #noCouncil {
-          grid-column: auto;
-          grid-column: auto;
-        }
-        .messageboard {
-          text-align: center;
+        h3 {}
         }
       }
+      //.councilForm #noCouncil {}
+      #council.messageboard {
+        grid-column: 1 / 2;
+        grid-row: 1 / -1;
+      
+      }
+      #noCouncil.messageboard {
+        grid-column: auto;
+        grid-column: auto;
+      }
+      .messageboard {
+        text-align: center;
+      }
+    }
   }
 /*-------------------Main--------------------------*/
 /*-------------------Footer------------------------*/
