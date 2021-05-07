@@ -12,7 +12,7 @@ password_creation_date DATETIME NOT NULL,
 user_creation_date DATETIME NOT NULL,
 firstname VARCHAR(20) NOT NULL,
 lastname VARCHAR(20) NOT NULL,
-pro_pic_loc VARCHAR(20) NOT NULL,
+pro_pic_loc VARCHAR(60) NOT NULL,
 about NVARCHAR(100) NOT NULL,
 logins INT UNSIGNED NOT NULL,
 last_login_date DATETIME NOT NULL,
@@ -23,7 +23,7 @@ UNIQUE (pro_pic_loc)
 CREATE TABLE tribe (
 tribeID INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 tribename VARCHAR(40) NOT NULL,
-tribe_pic_loc VARCHAR(20) NOT NULL,
+tribe_pic_loc VARCHAR(60) NOT NULL,
 UNIQUE (tribename),
 UNIQUE (tribe_pic_loc)
 );
@@ -71,7 +71,8 @@ ALTER TABLE posts
 ADD FOREIGN KEY (userID) references users(userID)
 ;
 
-#create test user
+# create test user
 
-INSERT INTO users (username, password, password_creation_date, user_creation_date, firstname, lastname, pro_pic_loc, about, logins, last_login_date) VALUES ('jimbo', SHA1('dont.panic'), NOW(), NOW(), 'jim', 'd', 'here',  "Long walks on the beach", 1, NOW());
+INSERT INTO users (username, password, password_creation_date, user_creation_date, firstname, lastname, pro_pic_loc, about, logins, last_login_date) VALUES ('jimbo', SHA1('password'), NOW(), NOW(), 'jim', 'd', 'here',  "Long walks on the beach", 1, NOW());
 
+INSERT INTO messageboard (userID) VALUES 1;

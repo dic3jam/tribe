@@ -25,8 +25,6 @@ class register {
 	/* function register
 	 * Performs a user registration by sending new info
 	 * to the database
-	 * @param string username - from $_POST
-	 * @param string password - from $_POST
 	 * @return bool upon success
 	 * @throws invalidPasswordException, invalidUserException, 
 	 * passwordLengthException
@@ -51,9 +49,9 @@ class register {
 
 	public function toString() : string {
 		return "Register: " .
-		       "username: " . $this->username .
-		       "isRegistered: " . $this->isRegistered . 
-		       "DBC: " . $this->dbc->toString();
+		       ", username: " . $this->username .
+		       ", isRegistered: " . $this->isRegistered . 
+		       $this->dbc->toString()
 		       ;
 	}
 

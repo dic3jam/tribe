@@ -1,10 +1,7 @@
 <?php
 session_start();
 include '../class/class-user.php';
-//include '../trait/trait-username.php';
-//include '../trait/trait-password.php';
 include '../trait/trait-fileUpload.php';
-//$_SESSION['user'] = 1;
 use fileUpload;
 $error = array();
 try {
@@ -57,24 +54,28 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
 }
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TRIBE</title>
-    </head>
-    <body>
-    <?php include '../include/header.php';?>
-        <h1>EDIT USER</h1>
-        <a href="profile.php">Return to profile</a>
-        <form method="post" action="" enctype="multipart/form-data">
-            Username: <input type="text" name="username">
-			Password: <input type="text" name="password">
-            First Name: <input type="text" name="firstName">
-            Last Name: <input type="text" name="lastName">
-            Upload Profile Pic <input type="file" name="fileToUpload" id="fileToUpload">
-            About: <input type="text" name="about">
-			<input type="submit" name="Login">
-        </form>
+<!---------HEADER---------------------->
+<?php include '../include/header.php';?>
+<!------------------------------------->
+
+    <nav id='editUser'>
+        <h1>TRIBE</h1>
+        <h2>EDIT USER</h2>
+        <a id="return" href="profile.php"><?php echo $user->username?></a>
+        <?php include 'logout.php';?>
+    </nav>
+    </div> <!--header-->
+
+    <div class='formMain'>
+    <form method="post" action="" enctype="multipart/form-data" id="reg">
+        Username: <input type="text" name="username">
+        Password: <input type="text" name="password">
+        First Name: <input type="text" name="firstName">
+        Last Name: <input type="text" name="lastName">
+        Upload Profile Pic <input type="file" name="fileToUpload" id="fileToUpload">
+        About: <textarea form="reg" maxlength="100" rows="5" cols="30" name="about">In 100 words or less</textarea>
+        <input type="submit" name="Login">
+    </form>
     <?php
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if(isset($actions) && !empty($actions)){
@@ -85,6 +86,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
     ?>
     <?php include 'errors.php';?>
-    <?php include '../include/footer.php';?>
-    </body>
-</html>
+    </div><!--main-->
+
+    <div class="footer">
+<!---------Footer---------------------->
+<?php include '../include/footer.php';?>
+<!------------------------------------->

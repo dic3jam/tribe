@@ -22,8 +22,9 @@ class tribe {
   public array $tribeMembers; //usernames, userIDs
   private int $tribeID;
   public string $tribeName;
-  private bool $isCouncilMember;
+  public bool $isCouncilMember;
   private int $userID;
+  public string $username;
   public string $tribe_pic_loc;
   public int $messageBoardID;
 
@@ -33,11 +34,12 @@ class tribe {
     $this->dbc = new dbc();
     $this->tribeID = (int) $_GET['tribeID'];
     //isCouncilMember failing will mean not a tribe member
-    $this->isCouncilMember = $this->checkCouncilMember();
+    $this->isCouncilMember = $this->checkCouncilMember($this->userID);
     $this->tribeName = $this->getTribeName();
     $this->tribeMembers = $this->getTribeMembers();
     $this->tribe_pic_loc = $this->getTribePic();
     $this->messageBoardID = messageBoard::getTribeMessageBoardID($this->dbc, $this->tribeID);
+    $this->username = username::getUsername($this->userID, $this->dbc);
     $this->repOk();
   }
 
@@ -78,12 +80,14 @@ class tribe {
   }
 
   //running this also validates that they are a tribe member
-  private function checkCouncilMember() : bool {
-    $b = $this->dbc->runQuery("checkCouncilMember", "ii", $this->tribeID, $this->userID);
-    if($b != NULL)
-      return $b;
+  private function checkCouncilMember(int $userID) : bool {
+    $b = $this->dbc->runQuery("checkCouncilMember", "ii", $this->tribeID, $userID);
+    if($b == 1)
+      return true;
+    else if($b == 0)
+      return false;
     else
-      throw new invalidMemberException();
+      throw new invalidMemberException("Not a member of this tribe");
   }
 
   //@return array of usernames and userIDs
@@ -98,29 +102,31 @@ class tribe {
   //setters
 
   public function removeTribeMembership(string $username) : bool {
-    try {
       $userID = ID::getUserID($username, $this->dbc);
-      return $this->dbc->runQuery("removeTribeMembership", "ii", $this->tribeID, $userID);
-    } catch (Exception $e) {
-      $e->getMessage("User does not exist, or is not a member of this tribe");
-    }
+      if(!$this->valMember($username))
+        throw new invalidMemberException("User is not a member of this tribe");
+      else{
+        $this->removeFromMemberArray($username);
+        return $this->dbc->runQuery("removeTribeMembership", "ii", $userID, $this->tribeID);
+      }
   }
+
   public function addTribeMembership(string $username, bool $isCouncilMember) : bool {
-    try {
       $userID = ID::getUserID($username, $this->dbc);
-    } catch (Exception $e) {
-      $e->getMessage("Not a valid user");
-    }
-    return $this->dbc->runQuery("addTribeMembership", "iii", $userID, $this->tribeID, $isCouncilMember);
+      if($this->valMember($username)) 
+        throw new invalidMemberException("User is already a tribe member!");
+      else
+        return $this->dbc->runQuery("addTribeMembership", "iii", $userID, $this->tribeID, $isCouncilMember);
   }
 
   public function addCouncilMember(string $username) : bool {
-    try {
-      $userID = ID::getUserID($username, $this->dbc);
-      return $this->dbc->runQuery("addCouncilMember", "ii", $this->tribeID, $userID);
-    } catch (Exception $e) {
-      $e->getMessage("Not a valid user, or not a member of this tribe");
-    }
+    $userID = ID::getUserID($username, $this->dbc);
+    if(!$this->valMember($username))
+        throw new invalidMemberException("User is not a member of this tribe");
+    if($this->checkCouncilMember($userID))
+      throw new invalidMemberException("Already a council member!");
+      else
+        return $this->dbc->runQuery("addCouncilMember", "ii", $this->tribeID, $userID);
   }
 
   //TODO v2 removeCouncilMember (nned to be voted on)
@@ -133,6 +139,23 @@ class tribe {
     return $this->dbc->runQuery("setTribeName", "si", $newTribeName, $this->tribeID);
   }
 
+  private function valMember(string $username) : bool {
+    for($i = 0; $i<count($this->tribeMembers); $i++) {
+        if($this->tribeMembers[$i][0] == $username)
+          return true;
+      }
+      return false;
+  }
+
+  private function removeFromMemberArray(string $username) : bool {
+    for($i = 0; $i<count($this->tribeMembers); $i++) {
+        if($this->tribeMembers[$i][0] == $username)
+          $this->tribeMembers[$i][0] == $username . " removed";
+          $this->tribeMembers[$i][1] == NULL;
+          return true;
+      }
+      return false;
+  }
 }
 
  ?>

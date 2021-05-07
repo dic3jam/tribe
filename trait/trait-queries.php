@@ -37,17 +37,19 @@ static $queries = array (
 	//tribe getters
 	"getTribeName" => "SELECT tribename FROM tribe WHERE tribeID = ?",
 	"getTribeID" => "SELECT tribeID from tribe WHERE tribename = ?",
-	"getTribeMessageBoardID" => "SELECT messageBoardID from messageboard WHERE tribeID = ?", //ret s, i
+	"getTribeMessageBoardID" => "SELECT messageBoardID from messageboard WHERE tribeID = ?", //ret s, 
 	"checkCouncilMember" => "SELECT councilMember FROM tribeMembership WHERE tribeID = ? AND userID = ?", //ret b, ii
 	"getTribePic" => "SELECT tribe_pic_loc FROM tribe WHERE tribeID = ?", //ret s, i
-	"getTribeMembers" => "SELECT users.username, users.userID from users INNER JOIN tribe ON users.userID=tribe.userID WHERE tribeID = ?", //ret array i, i
+	"getTribeMembers" => "SELECT users.username, users.userID from users INNER JOIN tribeMembership ON users.userID=tribeMembership.userID WHERE tribeID = ?", //ret array i, i
 	
 	//tribe setters
 	"removeTribeMembership" => "DELETE FROM tribeMembership WHERE userID = ? AND tribeID = ?", //ret b, ii
 	"addTribeMembership" => "INSERT INTO tribeMembership (userID, tribeID, councilMember) VALUES (?, ?, ?)", //ret b, iib
 	"addCouncilMember" => "UPDATE tribeMembership SET councilMember = 1 WHERE tribeID=? AND userID=?", //ret b, ii
 	"setTribePic" => "UPDATE tribe SET tribe_pic_loc = ? WHERE tribeID = ?", //ret b, si
-	"setTribeName" => "UPDATE tribe SET tribename = ? WHERE tribeID = ?" //ret b, si
+	"setTribeName" => "UPDATE tribe SET tribename = ? WHERE tribeID = ?", //ret b, si
+	"createNewTribe" => "INSERT INTO tribe (tribename, tribe_pic_loc) VALUES (?, ?)", //b, ss
+	"createTribeMessageBoardID" => "INSERT INTO messageboard (tribeID) VALUES (?)" //b, i
 );
 }
 ?>

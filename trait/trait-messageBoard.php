@@ -18,5 +18,8 @@ trait messageBoard {
 		return $dbc->runQuery('createMessageBoardID','i', $userID);
 	}
 
+	public function createTribeMessageBoardID(object $dbc, int $tribeID) : bool {
+		return $dbc->runQuery('createTribeMessageBoardID','i', $tribeID);
+	}
 }
 ?>

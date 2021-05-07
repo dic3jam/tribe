@@ -26,22 +26,29 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
 }
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TRIBE</title>
-    </head>
-    <body>
-        <?php include '../include/header.php';?>
-        <h1>TRIBE</h1>
-        <h2>Change Password</h2>
-        <form method="post" action="">
-            Username: <input type="text" name="username">
-			Password: <input type="text" name="password">
-			New Password: <input type="text" name="newPassword">
-            <input type="submit" name="Login">
-        </form>
-        <?php include 'errors.php';?>
-        <?php include '../include/footer.php';?>
-    </body>
-</html>
+
+<!---------HEADER---------------------->
+<?php include '../include/header.php';?>
+<!------------------------------------->
+        <nav>
+            <h1>TRIBE</h1>
+            <h2>Change Password</h2>
+            <a href="login.php">Login</a>
+        </nav>
+    </div> <!--header-->
+
+    <div class='formMain'>
+    <form method="post" action="">
+        Username: <input type="text" name="username">
+        Password: <input type="text" name="password">
+        New Password: <input type="text" name="newPassword">
+        <input type="submit" name="Login">
+    </form>
+    <?php include 'errors.php';?>
+    </div><!--main-->
+
+    <div class="footer">
+<!---------Footer---------------------->
+<?php include '../include/footer.php';?>
+<!------------------------------------->
+ 

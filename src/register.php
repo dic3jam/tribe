@@ -16,7 +16,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if($varSet){
         try {
             $reg = new register();
-            echo $reg->toString();
             $reg->advance();
         } catch (Exception $e) {
 			$error[] = $e->getMessage();
@@ -26,25 +25,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
 }
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TRIBE</title>
-    </head>
-    <body>
-    <?php include '../include/header.php';?>
+
+<!---------HEADER---------------------->
+<?php include '../include/header.php';?>
+<!------------------------------------->
+    <nav>
         <h1>TRIBE</h1>
         <h2>Register Here!</h2>
-        <form method="post" action="" enctype="multipart/form-data">
-            Username: <input type="text" name="username">
-			Password: <input type="text" name="password">
-            First Name: <input type="text" name="firstName">
-            Last Name: <input type="text" name="lastName">
-            Upload Profile Pic <input type="file" name="fileToUpload" id="fileToUpload">
-            About: <input type="text" name="about">
-			<input type="submit" name="Login">
-        </form>
-		<?php include 'errors.php';?>
-        <?php include '../include/footer.php';?>
-    </body>
-</html>
+        <a href="login.php">Login</a>
+    </nav>
+    </div> <!--header-->
+
+    <div class='formMain' id='reg'>
+    <form method="post" action="" enctype="multipart/form-data" id="reg">
+        Username: <input type="text" name="username">
+        Password: <input type="text" name="password">
+        First Name: <input type="text" name="firstName">
+        Last Name: <input type="text" name="lastName">
+        Upload Profile Pic <input type="file" name="fileToUpload" id="fileToUpload">
+        About: <textarea form="reg" maxlength="100" rows="5" cols="30" name="about">In 100 words or less</textarea>
+        <input type="submit" name="Login">
+    </form>
+    <?php include 'errors.php';?>
+    </div><!--main-->
+
+    <div class="footer">
+<!---------Footer---------------------->
+<?php include '../include/footer.php';?>
+<!------------------------------------->
+ 

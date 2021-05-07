@@ -13,49 +13,54 @@ try {
     header("Location: login.php");
     exit();
 }
-//logout button
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    if(isset($_POST['Logout'])){
-        session_unset();
-        session_destroy();
-        header("Location: login.php");
-    }
-}
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TRIBE</title>
-    </head>
-    <body>
-        <?php include 'errors.php';?>
-		<?php include '../include/header.php';?>
 
-        <?php echo "<h1 class='name'>" . $user->firstName . " " . $user->lastName . "</h1>";?>
+<!---------HEADER---------------------->
+<?php include '../include/header.php';?>
+<!------------------------------------->
+    <nav id='profile'>
+        <h1>TRIBE</h1>
+        <?php echo "<h2 class='title'>" . $user->firstName . " " . $user->lastName . "</h2>";?>
+        <a class="navLink" href="edit-user.php">Edit Info</a>
+        <?php include 'logout.php';?>
+    </nav>
+    </div> <!--header-->
 
-        <form method="post" action="">
-            <input type="submit" name="Logout" value="Logout">
-        </form>
-
-        <a id="edit" href="edit-user.php">Edit Info</a>
-
-        <?php echo "<img class='propic' src=$user->pro_pic_loc alt='Unable to load image' width='300' height='400'>";?>
-
-        <?php echo "<div class='about'>" . "<p class='aboutText'>" . $user->about . "</p>" . "</div>";?>
-
-        <?php echo "<div class='tribeList'>" . "<h3 class='tribeListTitle'>" . "Tribal Memberships" . "</h3>";
+    <div class='lsidebar'>
+    <?php echo "<div class='list'>" . "<h3 class='listTitle'>" . "Tribal Memberships" . "</h3>";
+    if(count($user->tribe_memberships) == 0) {
+        echo "<h4>Tribe of One!</h4>";
+    }else {
+        echo "<ul>";
         for($i = 0; $i < count($user->tribe_memberships) ; $i++){
             $tribename = $user->tribe_memberships[$i][0];    
             $tribeID = $user->tribe_memberships[$i][1];    
-            echo "<p class='tribename'><a href='tribe.php?tribeID=" . $tribeID . "'>"  . $tribename . "</a></p>";       
+            echo "<li><a href=tribe.php?tribeID=" . $tribeID ." >"  . $tribename . "</a></li>";       
         }
-        echo "</div>";
-        ?>
+    }
+    echo "<li><a href='create-tribe.php'>Create a new tribe!</a></li>";
+    echo "</ul></div>";
+    ?>
+    </div><!--lsidebar-->
 
-        <?php echo "<div class='messageboard'>" . "<h3 class='messageboardTitle'>" . "Message Board" . "</h3>";
-        echo "<p>Coming Soon!</p></div>";
-        ?>
-
-        <?php include '../include/footer.php';?>
-    </body>
-</html>
+    <div class="main">
+        <div class='leftMain'>
+            <div class="imgBox">
+                <?php echo "<img src=$user->pro_pic_loc alt='Unable to load image'>";?>
+            </div><!--imgBox-->
+            <div class='about'>
+            <h3>About</h3>
+            <?php echo "<p class='aboutText'>" . $user->about . "</p>";?> 
+            </div><!--about-->
+        </div><!--leftMain-->
+        <div class='rightMain'>
+            <?php echo "<div class='messageboard'>" . "<h3>" . "Message Board" . "</h3>";
+            echo "<p>Coming Soon!</p></div>";?>
+        </div><!--rightMain-->
+    </div><!--main-->
+        
+    <div class="footer">
+<!---------Footer---------------------->
+<?php include '../include/footer.php';?>
+<!------------------------------------->
+   
