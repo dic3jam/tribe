@@ -101,7 +101,9 @@ function echoCouncilTable($isCouncil, $tribe) {
 
     <div class='main'>
         <div class='leftMain'>
+            <div class="imgBox">
                 <?php echo "<img src=$tribe->tribe_pic_loc alt='Unable to load image'>";?>
+            </div><!--imgBox-->
             </div><!--leftMain-->
 
         <div class='rightMain'>
