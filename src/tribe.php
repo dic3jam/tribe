@@ -4,7 +4,6 @@ session_start();
 include '../class/class-tribe.php';
 try {
     $tribe = new tribe();
-    $_POST['messageBoardID'] = $tribe->messageBoardID;
 } catch (Exception $e) {
     $error[] = $e->getMessage();
     if(!empty($_SESSION['user'])){
@@ -32,11 +31,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $actions[] = "Council member added";
             $_POST['council'] = '';
         }
-        if($_FILES['fileToUpload']['error'] != 4) {
+        if(isset($_FILES['fileToUpload']) && $_FILES['fileToUpload']['error'] != 4) {
             fileUpload::delProPic($tribe->tribe_pic_loc);
             $tribe->setTribePic(fileUpload::storeProPic());
             $actions[] = "Tribe pic uploaded successfully";
-            //TODO does this make an entry in $_POST? If so need to clear
+            $_FILES['fileToUpload'] = '';
         }
     } catch (Exception $e) {
         $error[] = $e->getMessage();
@@ -76,11 +75,28 @@ function echoCouncilTable($isCouncil, $tribe) {
    
 }
 ?>
-
 <!---------HEADER---------------------->
 <?php include '../include/header.php';?>
 <!------------------------------------->
-    <script src='messageboard.js'></script>
+    <script>var exports = {};</script>
+    <script src='../js/messageboard.js'></script>
+    <script>
+        var xhr = new XMLHttpRequest();
+        var url = "../src/get_messages.php?messageBoardID=<?php echo $tribe->messageBoardID?>";
+        if(document.readyState !== 'loading') {
+        xhrOpen(xhr, url);
+        } else { 
+        document.addEventListener('DOMContentLoaded', (event) => {
+            xhrOpen(xhr, url);
+        });
+        }
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4) {
+                let new_messages = JSON.parse(xhr.response);
+                addPost(new_messages, 0, document.getElementById('mb'));
+            }
+        }; 
+    </script>
     <nav id='tribe'>
         <h1>TRIBE</h1>
         <h2 class='title'><?php echo $tribe->tribeName?></h2>

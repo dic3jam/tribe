@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $actions[] = "About updated";
             $_POST['about'] = '';
         }
-        if($_FILES['fileToUpload']['error'] != 4) {
+        if(isset($_FILES['fileToUpload']) && $_FILES['fileToUpload']['error'] != 4) {
             fileUpload::delProPic($user->pro_pic_loc);
             $user->setProPic(fileUpload::storeProPic());
             $actions[] = "Pro pic uploaded successfully";

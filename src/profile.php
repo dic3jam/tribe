@@ -1,15 +1,10 @@
 <?php
 session_start();
 
-$_SESSION['user'] = 1;
-
-
 include '../class/class-user.php';
 $error = array();
 try {
     $user = new user();
-    //for drawing up the message board
-    $_POST['messageBoardID'] = $user->messageBoardID;
 } catch (Exception $e) {
     $error[] = $e->getMessage();
     if(!empty($_SESSION['user'])){
@@ -20,11 +15,28 @@ try {
     exit();
 }
 ?>
-
 <!---------HEADER---------------------->
 <?php include '../include/header.php';?>
 <!------------------------------------->
+    <script>var exports = {};</script>
     <script src='../js/messageboard.js'></script>
+    <script>
+        var xhr = new XMLHttpRequest();
+        var url = "../src/get_messages.php?messageBoardID=<?php echo $user->messageBoardID?>";
+        if(document.readyState !== 'loading') {
+        xhrOpen(xhr, url);
+        } else { 
+        document.addEventListener('DOMContentLoaded', (event) => {
+            xhrOpen(xhr, url);
+        });
+        }
+        xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4) {
+            let new_messages = JSON.parse(xhr.response);
+            addPost(new_messages, 0, document.getElementById('mb'));
+        }
+        }; 
+    </script>
     <nav id='profile'>
         <h1>TRIBE</h1>
         <?php echo "<h2 class='title'>" . $user->firstName . " " . $user->lastName . "</h2>";?>

@@ -18,9 +18,9 @@ class tribe {
   use messageBoard;
   use fileUpload;
 
-  private object $dbc;
+  public object $dbc;
   public array $tribeMembers; //usernames, userIDs
-  private int $tribeID;
+  public int $tribeID;
   public string $tribeName;
   public bool $isCouncilMember;
   private int $userID;

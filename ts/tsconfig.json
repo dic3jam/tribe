@@ -2,6 +2,6 @@
 	"compilerOptions": {
 		"rootDir": ".",
 		"outDir": "../js/",
-		"sourceMap": true
+		//"sourceMap": true
 	}
 }
