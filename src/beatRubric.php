@@ -29,7 +29,7 @@
     <h3>Tell me your favorite ice cream!</h3>
     <p>(read/write xml files)</p>
 
-    <?php include 'form.php';?>
+    <?php include '../include/form.php';?>
       
   </div><!--main-->
 

@@ -49,7 +49,11 @@ static $queries = array (
 	"setTribePic" => "UPDATE tribe SET tribe_pic_loc = ? WHERE tribeID = ?", //ret b, si
 	"setTribeName" => "UPDATE tribe SET tribename = ? WHERE tribeID = ?", //ret b, si
 	"createNewTribe" => "INSERT INTO tribe (tribename, tribe_pic_loc) VALUES (?, ?)", //b, ss
-	"createTribeMessageBoardID" => "INSERT INTO messageboard (tribeID) VALUES (?)" //b, i
+	"createTribeMessageBoardID" => "INSERT INTO messageboard (tribeID) VALUES (?)", //b, i
+	"sendPost" => "INSERT INTO posts (creation_time, userID, message) VALUES (NOW(), ?, ?)", //b, is
+	"getPostID" => "SELECT postID from posts WHERE userID=(?) AND message=(?)", //int, is
+	"updateMessageBoardPosts" => "INSERT INTO messageboardposts (messageBoardID, postID) VALUES (?,?)", //b, ii
+	"getAllPosts" => "SELECT * from posts INNER JOIN messageboardposts ON posts.postID=messageboardposts.postID WHERE messageboardposts.messageBoardID = ?" //array, i
 );
 }
 ?>

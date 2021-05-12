@@ -1,9 +1,15 @@
 <?php
 session_start();
+
+$_SESSION['user'] = 1;
+
+
 include '../class/class-user.php';
 $error = array();
 try {
     $user = new user();
+    //for drawing up the message board
+    $_POST['messageBoardID'] = $user->messageBoardID;
 } catch (Exception $e) {
     $error[] = $e->getMessage();
     if(!empty($_SESSION['user'])){
@@ -18,6 +24,7 @@ try {
 <!---------HEADER---------------------->
 <?php include '../include/header.php';?>
 <!------------------------------------->
+    <script src='../js/messageboard.js'></script>
     <nav id='profile'>
         <h1>TRIBE</h1>
         <?php echo "<h2 class='title'>" . $user->firstName . " " . $user->lastName . "</h2>";?>
@@ -54,8 +61,11 @@ try {
             </div><!--about-->
         </div><!--leftMain-->
         <div class='rightMain'>
-            <?php echo "<div class='messageboard'>" . "<h3>" . "Message Board" . "</h3>";
-            echo "<p>Coming Soon!</p></div>";?>
+            <div class='messageboard'>
+               <h3>Message Board</h3>
+                  <?php include '../include/messageBoard.php';?>
+                  <div id='mb'></div>
+            </div><!--messageboard-->
         </div><!--rightMain-->
     </div><!--main-->
         
