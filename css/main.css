@@ -257,6 +257,7 @@ body {
       grid-template-columns: 2fr 1fr;
   -ms-grid-rows: 1fr;
       grid-template-rows: 1fr;
+  overflow: auto;
 }
 
 .grid .main .rightMain .councilForm {

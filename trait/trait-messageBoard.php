@@ -21,5 +21,16 @@ trait messageBoard {
 	public function createTribeMessageBoardID(object $dbc, int $tribeID) : bool {
 		return $dbc->runQuery('createTribeMessageBoardID','i', $tribeID);
 	}
+
+	public function sendPost(object $dbc, int $userID, string $message, int $messageBoardID) : bool {
+		$ret = $dbc->runQuery('sendPost', 'is', $userID, $message);
+		$pID = $dbc->runQuery('getPostID', 'is', $userID, $message);
+		$ret &= $dbc->runQuery('updateMessageBoardPosts', 'ii', $messageBoardID, $pID);
+		return (bool) $ret;
+	}
+
+	public function getAllPosts(object $dbc, int $messageBoardID) : array {
+		return $dbc->runQuery('getAllPosts', 'i', $messageBoardID);
+	}
 }
 ?>

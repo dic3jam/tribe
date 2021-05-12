@@ -32,7 +32,7 @@ class user {
 	public string $pro_pic_loc;
 	public string $about;
 	private int $logins;
-	private int $messageBoardID;
+	public int $messageBoardID;
 	private string $last_login_date;
 	public array /*associative*/ $tribe_memberships;
 

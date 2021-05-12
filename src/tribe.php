@@ -4,6 +4,7 @@ session_start();
 include '../class/class-tribe.php';
 try {
     $tribe = new tribe();
+    $_POST['messageBoardID'] = $tribe->messageBoardID;
 } catch (Exception $e) {
     $error[] = $e->getMessage();
     if(!empty($_SESSION['user'])){
@@ -48,8 +49,9 @@ function echoCouncilTable($isCouncil, $tribe) {
         $id = "noCouncil";
 
     echo "<div class='messageboard'" . $id . ">" . "<h3>" . $tribe->tribeName ." Board" . "</h3>";
+    include '../include/messageBoard.php';
 
-    echo "<p>Coming Soon!</p></div>";
+    echo "<div id='mb'></div> </div><!--messageboard-->";
 
     if($tribe->isCouncilMember) {
         echo "<div class='councilForm'>";
@@ -78,6 +80,7 @@ function echoCouncilTable($isCouncil, $tribe) {
 <!---------HEADER---------------------->
 <?php include '../include/header.php';?>
 <!------------------------------------->
+    <script src='messageboard.js'></script>
     <nav id='tribe'>
         <h1>TRIBE</h1>
         <h2 class='title'><?php echo $tribe->tribeName?></h2>
@@ -117,7 +120,7 @@ function echoCouncilTable($isCouncil, $tribe) {
         </div><!--rightMain-->
     </div><!--main-->
 
-<div class="footer">
+    <div class="footer">
 <!---------Footer---------------------->
 <?php include '../include/footer.php';?>
 <!------------------------------------->
