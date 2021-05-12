@@ -22,8 +22,8 @@ body {
 .grid {
   display: grid;
   grid-gap: 3px;
-  grid-template-columns: repeat($fractionUnits, 1fr);
-  grid-template-rows: repeat($fractionUnits, 1fr);
+  grid-template-columns: repeat($fractionUnits, minmax(0, 1fr));
+  grid-template-rows: repeat($fractionUnits, minmax(0, 1fr));
   height: 100%;
 /*-------------------HEADER------------------------*/
   @media all and (max-width: 600px){
@@ -43,14 +43,14 @@ body {
     grid-column: 1 / -1;
     grid-row: 1 / 2;
     display: grid;
-    grid-template-columns: repeat($fractionUnits, 1fr);
+    grid-template-columns: repeat($fractionUnits, minmax(0, 1fr));
     grid-template-rows: 1fr;
     background-color: $accent;
     nav {
       grid-column: 1 / -1;
       grid-row: 1 / 2;
       display: grid;
-      grid-template-columns: repeat($fractionUnits, 1fr);
+      grid-template-columns: repeat($fractionUnits, minmax(0, 1fr));
       grid-template-rows: 1fr;
       overflow: hidden;
       font-weight: bold;
@@ -192,9 +192,8 @@ body {
     }
     .rightMain {
       display:grid;
-      grid-template-columns: 2fr 1fr;
-      grid-template-rows: 1fr;
-      overflow: auto;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
       .councilForm {
         display:block;
         grid-column: 2 / 3;
@@ -218,7 +217,9 @@ body {
         grid-column: auto;
       }
       .messageboard {
+        max-height: 600px;
         text-align: center;
+        overflow: auto;
       }
     }
   }

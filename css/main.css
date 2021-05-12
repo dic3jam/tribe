@@ -12,10 +12,10 @@ body {
   display: -ms-grid;
   display: grid;
   grid-gap: 3px;
-  -ms-grid-columns: (1fr)[6];
-      grid-template-columns: repeat(6, 1fr);
-  -ms-grid-rows: (1fr)[6];
-      grid-template-rows: repeat(6, 1fr);
+  -ms-grid-columns: (minmax(0, 1fr))[6];
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+  -ms-grid-rows: (minmax(0, 1fr))[6];
+      grid-template-rows: repeat(6, minmax(0, 1fr));
   height: 100%;
   /*-------------------HEADER------------------------*/
   /*-------------------HEADER------------------------*/
@@ -55,8 +55,8 @@ body {
   grid-row: 1 / 2;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr)[6];
-      grid-template-columns: repeat(6, 1fr);
+  -ms-grid-columns: (minmax(0, 1fr))[6];
+      grid-template-columns: repeat(6, minmax(0, 1fr));
   -ms-grid-rows: 1fr;
       grid-template-rows: 1fr;
   background-color: #ccd5aeff;
@@ -69,8 +69,8 @@ body {
   grid-row: 1 / 2;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr)[6];
-      grid-template-columns: repeat(6, 1fr);
+  -ms-grid-columns: (minmax(0, 1fr))[6];
+      grid-template-columns: repeat(6, minmax(0, 1fr));
   -ms-grid-rows: 1fr;
       grid-template-rows: 1fr;
   overflow: hidden;
@@ -253,11 +253,10 @@ body {
 .grid .main .rightMain {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 2fr 1fr;
-      grid-template-columns: 2fr 1fr;
-  -ms-grid-rows: 1fr;
-      grid-template-rows: 1fr;
-  overflow: auto;
+  -ms-grid-columns: minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  -ms-grid-rows: minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
 }
 
 .grid .main .rightMain .councilForm {
@@ -286,7 +285,9 @@ body {
 }
 
 .grid .main .rightMain .messageboard {
+  max-height: 600px;
   text-align: center;
+  overflow: auto;
 }
 
 .grid .footer {

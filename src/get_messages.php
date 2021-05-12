@@ -11,7 +11,7 @@ include '../trait/trait-messageBoard.php';
 include '../trait/trait-username.php';
 
 $dbc = new dbc();
-$posts = messageBoard::getAllPosts($dbc, ((int)$_POST['messageBoardID']));
+$posts = messageBoard::getAllPosts($dbc, ((int)$_GET['messageBoardID']));
 $posts_new = array();
 for($i = 0; $i < count($posts); $i++){
   $posts_new[$i] = array (
