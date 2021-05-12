@@ -285,9 +285,30 @@ body {
 }
 
 .grid .main .rightMain .messageboard {
+  background-color: #d4a373ff;
   max-height: 600px;
   text-align: center;
   overflow: auto;
+}
+
+.grid .main .rightMain div#mb {
+  background-color: #ccd5aeff;
+  margin: 3px;
+}
+
+.grid .main .rightMain div#mb p.messages {
+  background-color: #fefae0ff;
+  text-align: left;
+  font-weight: bold;
+  margin: 8px;
+}
+
+.grid .main .rightMain div#mb p.messages p {
+  font-weight: 100;
+  display: inline-block;
+  text-align: left;
+  margin: 2px;
+  margin-left: 20px;
 }
 
 .grid .footer {
