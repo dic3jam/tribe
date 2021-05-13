@@ -6,6 +6,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         header("Location: login.php");
     }
 }?>
-<form method='post' action=''> 
+<form method='post'> 
   <input id='logout' type='submit' name='Logout' value='Logout'>
 </form>
