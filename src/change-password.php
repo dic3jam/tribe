@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     </div> <!--header-->
 
     <div class='formMain'>
-    <form method="post" action="">
+    <form method="post">
         Username: <input type="text" name="username">
         Password: <input type="text" name="password">
         New Password: <input type="text" name="newPassword">

@@ -55,7 +55,7 @@ function echoCouncilTable($isCouncil, $tribe) {
     if($tribe->isCouncilMember) {
         echo "<div class='councilForm'>";
         echo "<h3 class='listTitle'>" . "Council Member Table" . "</h3>";
-        echo "<form method='post' action='' enctype='multipart/form-data'>" .
+        echo "<form method='post' enctype='multipart/form-data'>" .
         "Invite Members: <input type='text' name='invite'>" . 
         "Remove Member: <input type='text' name='remove'>" . 
         "Add Council Member: <input type='text' name='council'>" . 

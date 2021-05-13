@@ -36,8 +36,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     </nav>
     </div> <!--header-->
 
-    <div class='formMain' id='reg'>
-    <form method="post" action="" enctype="multipart/form-data" id="reg">
+    <div class='formMain' id='regi'>
+    <form method="post" enctype="multipart/form-data" id="reg">
         Username: <input type="text" name="username">
         Password: <input type="text" name="password">
         First Name: <input type="text" name="firstName">

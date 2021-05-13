@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <div class='formMain' id='login'>
 		<h3>Login Here</h3>
-		<form method="post" action=""> 
+		<form method="post"> 
 			Username: <input type="text" name="username">
 			Password: <input type="text" name="password">
 			<input type="submit" name="Login">

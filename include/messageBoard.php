@@ -1,6 +1,3 @@
-
-
-
 <?php
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if(!empty($_POST['message'])) {
@@ -13,7 +10,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
   }
 }
 ?>
-<form method='post' action='' id='mb_send'>
+<form method='post' id='mb_send'>
    Message: <textarea form='mb_send' maxlength='500' rows='5' cols='30' name='message'></textarea>
    <input type='submit' name='Post'>
 </form>
